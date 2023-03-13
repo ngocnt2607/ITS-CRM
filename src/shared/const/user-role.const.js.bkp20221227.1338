@@ -1,0 +1,37 @@
+export const UserRole = {
+  CUSTOMER: 'CUSTOMER',
+  SALE: 'SALE',
+  NOC: 'NOC',
+  CS: 'CS',
+  ADMIN_USER: 'ADMIN_USER',
+  SUPER_ADMIN_GROUP: 'SUPER_ADMIN_GROUP',
+  KETOAN: 'KETOAN',
+};
+
+export const PATH_BY_ROLE = {
+  CS: [
+    '/vendor',
+    '/vendor-contact',
+    '/vendor-package',
+    '/number-owner',
+    '/number-member',
+    '/brand-management',
+    '/report',
+    '/totalreport',
+    '/contract-management',
+    '/home',
+    '/change-password',
+  ],
+  KETOAN: ['/home','/report', '/totalreport','/change-password'],
+  SALE: ['/home','/report', '/totalreport', '/contract-management','/change-password'],
+  CUSTOMER: ['/home','/report-customer','/change-password'],
+  NOC: [
+    '/home',
+    '/partner-management',
+    '/account',
+    '/mapping',
+    '/routing',
+    '/partner-detail',
+    '/change-password'
+  ]
+};

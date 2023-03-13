@@ -1,0 +1,18 @@
+.auto-complete {
+  max-height: 120px;
+  overflow: auto;
+
+  legend {
+    width: 0px !important;
+  }
+
+  .MuiOutlinedInput-root {
+    border: 1px solid white;
+  }
+
+  .MuiFormHelperText-root {
+    margin-left: 0px !important;
+    margin-top: 0.25rem !important;
+    color: #f06548;
+  }
+}
