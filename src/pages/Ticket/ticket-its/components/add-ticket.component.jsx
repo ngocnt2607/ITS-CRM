@@ -24,7 +24,17 @@ const INIT = {
   ip: '',
   recordStatus: '',
   note: '',
-  test: [],
+  test: [
+    {
+      number: '',
+      callin: '',
+      callout: '',
+      onnet: '',
+      offnet: '',
+      telco: '',
+      brand_name: '',
+    },
+  ],
 };
 
 function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
