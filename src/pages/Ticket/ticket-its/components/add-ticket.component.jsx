@@ -24,17 +24,7 @@ const INIT = {
   ip: '',
   recordStatus: '',
   note: '',
-  test: [
-    {
-      number: '',
-      callin: '',
-      callout: '',
-      onnet: '',
-      offnet: '',
-      telco: '',
-      brand_name: '',
-    },
-  ],
+  test: [],
 };
 
 function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
@@ -50,7 +40,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
     onnets: [],
     offnets: [],
     recordStatus: [],
-    telcos: []
+    telcos: [],
   });
   const TYPE_OPTION = useRef([
     { label: 'ON', value: 'ON' },
@@ -84,8 +74,16 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
         note,
         brand_name,
       } = updateRecord;
-      const parsedTest = JSON.parse(test.replaceAll("'", "\""));
-      console.log(parsedTest)
+      const parsedTest = JSON.parse(test.replaceAll("'", '"'));
+      const mapTest = parsedTest?.map((item) => ({
+        ...item,
+        callin: generateOption(item.callin, item.callin),
+        callout: generateOption(item.callout, item.callout),
+        offnet: generateOption(item.offnet, item.offnet),
+        offonnetnet: generateOption(item.onnet, item.onnet),
+        telco: generateOption(item.telco, item.telco),
+      }));
+
       setInitialValues({
         note,
         brand_name,
@@ -93,7 +91,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
         nickname2: generateOption(nickname2, nickname2),
         nickname3: generateOption(nickname3, nickname3),
         ip,
-        test: parsedTest,
+        test: mapTest,
         recordStatus: generateOption(status, status),
       });
       validationSchema.fields.recordStatus = Yup.object()
@@ -107,7 +105,6 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
 
   const handleSubmit = async (values) => {
     try {
-      console.log('aa');
       setLoading(true);
       const testArray = values.test?.map((item) => ({
         ...item,
@@ -157,10 +154,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
   };
 
   const getListData = useCallback(async () => {
-    const listAPI = [
-      PartnerDetailAPI.getPartner,
-      PartnerDetailAPI.getTelco,
-    ];
+    const listAPI = [PartnerDetailAPI.getPartner, PartnerDetailAPI.getTelco];
     try {
       setLoading(true);
       const response = await Promise.all(listAPI.map((api) => api()));
@@ -209,11 +203,11 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
 
         <div className='modal-body'>
           <Formik
-            enableReinitialize
             validationSchema={validationSchema}
             initialValues={initialValues}
             onSubmit={handleSubmit}
             innerRef={formRef}
+            enableReinitialize
           >
             {({ values }) => {
               return (
@@ -286,108 +280,121 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
                       {({ push, remove }) => (
                         <>
                           <Col lg={12} className='mt-3 ml-4'>
-                            <Typography variant='body2'>Thông tin đấu nối</Typography>
+                            <Typography variant='body2'>
+                              Thông tin đấu nối
+                            </Typography>
                           </Col>
-                          {values.test && values.test.map((test, index) => (
-                            <React.Fragment key={index}>
-                              <Col lg={6} className='ml-4 mt-3'>
-                                <CustomTextareaComponent
-                                  name={`test[${index}].number`}
-                                  label='Thông tin thuê bao'
-                                  placeholder='Vui lòng nhập thông tin thuê bao'
-                                  disabled={isViewMode || !!updateRecord}
-                                  rows={5}
-                                  cols={10}
-                                />
-                              </Col>
+                          {values.test &&
+                            values.test.map((test, index) => (
+                              <React.Fragment key={index}>
+                                <Col lg={6} className='ml-4 mt-3'>
+                                  <CustomTextareaComponent
+                                    name={`test[${index}].number`}
+                                    label='Thông tin thuê bao'
+                                    placeholder='Vui lòng nhập thông tin thuê bao'
+                                    disabled={isViewMode || !!updateRecord}
+                                    rows={5}
+                                    cols={10}
+                                  />
+                                </Col>
 
-                              <Col lg={6}>
-                                <Row>
-                                  <Col lg={4} className='mt-3'>
-                                    <CustomSelectComponent
-                                      name={`test[${index}].telco`}
-                                      label='Nhà mạng'
-                                      options={listData.telcos}
-                                      placeholder='Chọn nhà mạng'
-                                      isDisabled={isViewMode || !!updateRecord}
-                                    />
-                                  </Col>
+                                <Col lg={6}>
+                                  <Row>
+                                    <Col lg={4} className='mt-3'>
+                                      <CustomSelectComponent
+                                        name={`test[${index}].telco`}
+                                        label='Nhà mạng'
+                                        options={listData.telcos}
+                                        placeholder='Chọn nhà mạng'
+                                        isDisabled={
+                                          isViewMode || !!updateRecord
+                                        }
+                                      />
+                                    </Col>
 
-                                  <Col lg={4} className='mt-3'>
-                                    <CustomInputComponent
-                                      name={`test[${index}].brand_name`}
-                                      label='Tên Brand'
-                                      placeholder='Vui lòng nhập tên Brand'
-                                      disabled={isViewMode || !!updateRecord}
-                                    />
-                                  </Col>
+                                    <Col lg={4} className='mt-3'>
+                                      <CustomInputComponent
+                                        name={`test[${index}].brand_name`}
+                                        label='Tên Brand'
+                                        placeholder='Vui lòng nhập tên Brand'
+                                        disabled={isViewMode || !!updateRecord}
+                                      />
+                                    </Col>
 
-                                  <Col lg={4} className='ml-4 mt-3'>
-                                    <CustomSelectComponent
-                                      name={`test[${index}].onnet`}
-                                      options={TYPE_OPTION}
-                                      label='On Net'
-                                      placeholder='On Net'
-                                      isDisabled={isViewMode || !!updateRecord}
-                                    />
-                                  </Col>
+                                    <Col lg={4} className='ml-4 mt-3'>
+                                      <CustomSelectComponent
+                                        name={`test[${index}].onnet`}
+                                        options={TYPE_OPTION}
+                                        label='On Net'
+                                        placeholder='On Net'
+                                        isDisabled={
+                                          isViewMode || !!updateRecord
+                                        }
+                                      />
+                                    </Col>
 
-                                  <Col lg={4} className='ml-4 mt-3'>
-                                    <CustomSelectComponent
-                                      name={`test[${index}].callin`}
-                                      options={TYPE_OPTION}
-                                      label='Call In'
-                                      placeholder='Call in'
-                                      isDisabled={isViewMode || !!updateRecord}
-                                    />
-                                  </Col>
+                                    <Col lg={4} className='ml-4 mt-3'>
+                                      <CustomSelectComponent
+                                        name={`test[${index}].callin`}
+                                        options={TYPE_OPTION}
+                                        label='Call In'
+                                        placeholder='Call in'
+                                        isDisabled={
+                                          isViewMode || !!updateRecord
+                                        }
+                                      />
+                                    </Col>
 
-                                  <Col lg={4} className='ml-4 mt-3'>
-                                    <CustomSelectComponent
-                                      name={`test[${index}].callout`}
-                                      options={TYPE_OPTION}
-                                      label='Call Out'
-                                      placeholder='Call out'
-                                      isDisabled={isViewMode || !!updateRecord}
-                                    />
-                                  </Col>
+                                    <Col lg={4} className='ml-4 mt-3'>
+                                      <CustomSelectComponent
+                                        name={`test[${index}].callout`}
+                                        options={TYPE_OPTION}
+                                        label='Call Out'
+                                        placeholder='Call out'
+                                        isDisabled={
+                                          isViewMode || !!updateRecord
+                                        }
+                                      />
+                                    </Col>
 
-                                  <Col lg={4} className='ml-4 mt-3'>
-                                    <CustomSelectComponent
-                                      name={`test[${index}].offnet`}
-                                      options={TYPE_OPTION}
-                                      label='Off Net'
-                                      placeholder='Off Net'
-                                      isDisabled={isViewMode || !!updateRecord}
-                                    />
-                                  </Col>
-                                </Row>
-                              </Col>
+                                    <Col lg={4} className='ml-4 mt-3'>
+                                      <CustomSelectComponent
+                                        name={`test[${index}].offnet`}
+                                        options={TYPE_OPTION}
+                                        label='Off Net'
+                                        placeholder='Off Net'
+                                        isDisabled={
+                                          isViewMode || !!updateRecord
+                                        }
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
 
-                              <Col lg={1} className='ml-4 mt-3'>
-                                <Button onClick={() => remove(index)}>
-                                  Delete
-                                </Button>
-                              </Col>
-                              <Col lg={11} className='ml-4 mt-3'>
-                                <Button
-                                  onClick={() =>
-                                    push({
-                                      telco: '',
-                                      number: '',
-                                      brand_name: '',
-                                      callin: '',
-                                      callout: '',
-                                      onnet: '',
-                                      offnet: '',
-                                    })
-                                  }
-                                >
-                                  Add
-                                </Button>
-                              </Col>
-                            </React.Fragment>
-                          ))}
+                                <Col lg={1} className='ml-4 mt-3'>
+                                  <Button onClick={() => remove(index)}>
+                                    Delete
+                                  </Button>
+                                </Col>
+                                <Col lg={11} className='ml-4 mt-3'>
+                                  <Button
+                                    onClick={() =>
+                                      push({
+                                        telco: '',
+                                        number: '',
+                                        brand_name: '',
+                                        callin: '',
+                                        callout: '',
+                                        onnet: '',
+                                        offnet: '',
+                                      })
+                                    }
+                                  >
+                                    Add
+                                  </Button>
+                                </Col>
+                              </React.Fragment>
+                            ))}
                         </>
                       )}
                     </FieldArray>
