@@ -66,12 +66,6 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
       nickname2: Yup.object().nullable(),
       nickname3: Yup.object().nullable(),
       ip: Yup.string().required('Vui lòng nhập IP của khách hàng'),
-      // number: Yup.string().required('Vui lòng nhập thông tin thuê bao'),
-      // telco: Yup.string().required('Vui lòng chọn nhà mạng'),
-      // callin: Yup.object().nullable(),
-      // callout: Yup.object().nullable(),
-      // onnet: Yup.object().nullable(),
-      // offnet: Yup.object().nullable(),
       recordStatus: Yup.object().nullable(),
       note: Yup.string(),
       brand_name: Yup.string(),
@@ -85,31 +79,21 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
         nickname2,
         nickname3,
         ip,
-        number,
-        callin,
-        callout,
-        onnet,
-        offnet,
-        telco,
         test,
         status,
         note,
         brand_name,
       } = updateRecord;
+      const parsedTest = JSON.parse(test.replaceAll("'", "\""));
+      console.log(parsedTest)
       setInitialValues({
         note,
         brand_name,
-        // telco,
         nickname1: generateOption(nickname1, nickname1),
         nickname2: generateOption(nickname2, nickname2),
         nickname3: generateOption(nickname3, nickname3),
         ip,
-        test: JSON.parse(test.replace(/'/g, '"')),
-        // number,
-        // callin: generateOption(callin, callin),
-        // callout: generateOption(callout, callout),
-        // onnet: generateOption(onnet, onnet),
-        // offnet: generateOption(offnet, offnet),
+        test: parsedTest,
         recordStatus: generateOption(status, status),
       });
       validationSchema.fields.recordStatus = Yup.object()
@@ -334,7 +318,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
                                       name={`test[${index}].brand_name`}
                                       label='Tên Brand'
                                       placeholder='Vui lòng nhập tên Brand'
-                                      isDisabled={isViewMode || !!updateRecord}
+                                      disabled={isViewMode || !!updateRecord}
                                     />
                                   </Col>
 
