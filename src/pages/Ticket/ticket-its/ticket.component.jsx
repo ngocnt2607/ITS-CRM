@@ -86,7 +86,12 @@ const TicketList = () => {
     {
       field: 'user_create',
       headerName: 'Người tạo ticket',
-      width: 180,
+      width: 150,
+    },
+    {
+      field: 'ticket_id',
+      headerName: 'Ticket ID',
+      width: 150,
     },
     {
       field: 'partner',

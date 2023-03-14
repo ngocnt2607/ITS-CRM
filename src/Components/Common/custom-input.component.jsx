@@ -9,7 +9,6 @@ function CustomInput({
   onChange,
   label,
   disabled,
-  isDisabled = false,
   type = 'text',
 }) {
   const { errors, touched, setFieldValue, setFieldTouched, values } =
@@ -38,7 +37,6 @@ function CustomInput({
         onBlur={() => setFieldTouched(name, true)}
         invalid={touched[name] && errors[name] ? true : false}
         disabled={disabled}
-        isDisabled={isDisabled}
       />
       {touched[name] && errors[name] ? (
         <FormFeedback type='invalid'>{errors[name]}</FormFeedback>

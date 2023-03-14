@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Button, Col, Label, Modal, ModalHeader, Row } from 'reactstrap';
 import * as Yup from 'yup';
 import { TicketAPI } from '../../../../api/ticket.api';
-import { PartnerAPI } from '../../../../api/customer-management.api';
 import { PartnerDetailAPI } from '../../../../api/partnerdetail.api';
 import addToast from '../../../../Components/Common/add-toast.component';
 import CustomInputComponent from '../../../../Components/Common/custom-input.component';
@@ -51,6 +50,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
     onnets: [],
     offnets: [],
     recordStatus: [],
+    telcos: []
   });
   const TYPE_OPTION = useRef([
     { label: 'ON', value: 'ON' },
@@ -91,6 +91,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
         onnet,
         offnet,
         telco,
+        test,
         status,
         note,
         brand_name,
@@ -103,6 +104,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
         nickname2: generateOption(nickname2, nickname2),
         nickname3: generateOption(nickname3, nickname3),
         ip,
+        test: JSON.parse(test.replace(/'/g, '"')),
         // number,
         // callin: generateOption(callin, callin),
         // callout: generateOption(callout, callout),
@@ -125,6 +127,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
       setLoading(true);
       const testArray = values.test?.map((item) => ({
         ...item,
+        telco: item.telco?.value || '',
         callin: item.callin?.value || '',
         callout: item.callout?.value || '',
         onnet: item.onnet?.value || '',
@@ -138,7 +141,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
           nickname2: values.nickname2?.value || '',
           nickname3: values.nickname3?.value || '',
           status: values.recordStatus?.value || '',
-          id: updateRecord.id,
+          ticket_id: updateRecord.ticket_id,
         });
       } else {
         await TicketAPI.createNewTicket({
@@ -170,7 +173,10 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
   };
 
   const getListData = useCallback(async () => {
-    const listAPI = [PartnerDetailAPI.getPartner];
+    const listAPI = [
+      PartnerDetailAPI.getPartner,
+      PartnerDetailAPI.getTelco,
+    ];
     try {
       setLoading(true);
       const response = await Promise.all(listAPI.map((api) => api()));
@@ -179,6 +185,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
         nickname1s: getListOption(response[0]?.data, 'nickname', 'nickname'),
         nickname2s: getListOption(response[0]?.data, 'nickname', 'nickname'),
         nickname3s: getListOption(response[0]?.data, 'nickname', 'nickname'),
+        telcos: getListOption(response[1]?.data, 'name', 'name'),
       }));
       setLoading(false);
     } catch (error) {
@@ -200,7 +207,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
         modalClassName='flip'
         centered
         size='lg'
-        style={{ maxWidth: '85%', margin: '0 auto' }}
+        style={{ maxWidth: '65%', margin: '0 auto' }}
       >
         <ModalHeader>
           {isViewMode
@@ -295,9 +302,9 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
                       {({ push, remove }) => (
                         <>
                           <Col lg={12} className='mt-3 ml-4'>
-                            <Typography variant='body2'>Ticket</Typography>
+                            <Typography variant='body2'>Thông tin đấu nối</Typography>
                           </Col>
-                          {values.test.map((test, index) => (
+                          {values.test && values.test.map((test, index) => (
                             <React.Fragment key={index}>
                               <Col lg={6} className='ml-4 mt-3'>
                                 <CustomTextareaComponent
@@ -313,10 +320,11 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
                               <Col lg={6}>
                                 <Row>
                                   <Col lg={4} className='mt-3'>
-                                    <CustomInputComponent
+                                    <CustomSelectComponent
                                       name={`test[${index}].telco`}
                                       label='Nhà mạng'
-                                      placeholder='Vui lòng chọn nhà mạng'
+                                      options={listData.telcos}
+                                      placeholder='Chọn nhà mạng'
                                       isDisabled={isViewMode || !!updateRecord}
                                     />
                                   </Col>
