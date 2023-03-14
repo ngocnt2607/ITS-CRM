@@ -80,7 +80,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
         callin: generateOption(item.callin, item.callin),
         callout: generateOption(item.callout, item.callout),
         offnet: generateOption(item.offnet, item.offnet),
-        offonnetnet: generateOption(item.onnet, item.onnet),
+        onnet: generateOption(item.onnet, item.onnet),
         telco: generateOption(item.telco, item.telco),
       }));
 
