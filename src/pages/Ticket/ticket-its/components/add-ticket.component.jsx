@@ -1,4 +1,4 @@
-import { Form, Formik, useFormik, FieldArray } from 'formik';
+import { Form, Formik, useFormik, FieldArray, Field } from 'formik';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Button, Col, Label, Modal, ModalHeader, Row } from 'reactstrap';
@@ -83,8 +83,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
         status,
         note,
       } = updateRecord;
-      const parsedTest = JSON.parse(test.replaceAll("'", '"'));
-      const mapTest = parsedTest?.map((item) => ({
+      const mapTest = test?.map((item) => ({
         ...item,
         callin: generateOption(item.callin, item.callin),
         callout: generateOption(item.callout, item.callout),
@@ -297,12 +296,13 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
                               <React.Fragment key={index}>
                                 <Col lg={6} className='ml-4 mt-3'>
                                   <CustomTextareaComponent
-                                    name={`test[${index}].number`}
+                                    name={`test.${index}.number`}
                                     label='Thông tin thuê bao'
                                     placeholder='Vui lòng nhập thông tin thuê bao'
                                     disabled={isViewMode || !!updateRecord}
                                     rows={5}
                                     cols={10}
+                                    value={test.number}
                                   />
                                 </Col>
 
@@ -317,6 +317,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
                                         isDisabled={
                                           isViewMode || !!updateRecord
                                         }
+                                        value={test.telco}
                                       />
                                     </Col>
 
@@ -326,6 +327,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
                                         label='Tên Brand'
                                         placeholder='Vui lòng nhập tên Brand'
                                         disabled={isViewMode || !!updateRecord}
+                                        value={test.brand_name}
                                       />
                                     </Col>
 
@@ -338,6 +340,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
                                         isDisabled={
                                           isViewMode || !!updateRecord
                                         }
+                                        value={test.onnet}
                                       />
                                     </Col>
 
@@ -350,6 +353,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
                                         isDisabled={
                                           isViewMode || !!updateRecord
                                         }
+                                        value={test.callin}
                                       />
                                     </Col>
 
@@ -362,6 +366,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
                                         isDisabled={
                                           isViewMode || !!updateRecord
                                         }
+                                        value={test.callout}
                                       />
                                     </Col>
 
@@ -374,6 +379,7 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
                                         isDisabled={
                                           isViewMode || !!updateRecord
                                         }
+                                        value={test.offnet}
                                       />
                                     </Col>
                                   </Row>

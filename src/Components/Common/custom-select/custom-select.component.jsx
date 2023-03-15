@@ -14,6 +14,7 @@ const CustomSelect = ({
   label,
   placeholder = 'Select...',
   onChange,
+  value = '',
 }) => {
   const generateOptions = useMemo(
     () =>
@@ -61,7 +62,7 @@ const CustomSelect = ({
         onChange={handleChange}
         onBlur={handleBlur}
         isDisabled={isDisabled}
-        value={values[name]}
+        value={value || values[name]}
         placeholder={placeholder}
       />
       {!!errors[name] && touched[name] && (
@@ -79,6 +80,7 @@ CustomSelect.propTypes = {
   isAll: PropTypes.bool,
   onChange: PropTypes.func,
   isDisabled: PropTypes.bool,
+  value: PropTypes.any,
 };
 
 export default React.memo(CustomSelect);
