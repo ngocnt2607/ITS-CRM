@@ -11,6 +11,7 @@ function CustomTextarea({
   disabled,
   rows = 4,
   cols = 10,
+  value = '',
 }) {
   const { errors, touched, setFieldValue, setFieldTouched, values } =
     useFormikContext();
@@ -30,10 +31,12 @@ function CustomTextarea({
 
       <textarea
         name={name}
-        className={`form-control ${touched[name] && errors[name] ? 'is-invalid' : ''}`}
+        className={`form-control ${
+          touched[name] && errors[name] ? 'is-invalid' : ''
+        }`}
         placeholder={placeholder}
         onChange={handleChange}
-        value={values[name]}
+        value={value || values[name]}
         onBlur={() => setFieldTouched(name, true)}
         // invalid={touched[name] && errors[name] ? true : false}
         disabled={disabled}
@@ -56,6 +59,7 @@ CustomTextarea.propTypes = {
   disabled: PropTypes.bool,
   rows: PropTypes.number,
   cols: PropTypes.number,
+  value: PropTypes.string,
 };
 
 export default React.memo(CustomTextarea);

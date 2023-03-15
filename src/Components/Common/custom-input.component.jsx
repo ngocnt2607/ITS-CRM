@@ -10,6 +10,7 @@ function CustomInput({
   label,
   disabled,
   type = 'text',
+  value = '',
 }) {
   const { errors, touched, setFieldValue, setFieldTouched, values } =
     useFormikContext();
@@ -33,7 +34,7 @@ function CustomInput({
         placeholder={placeholder}
         onChange={handleChange}
         type={type}
-        value={values[name]}
+        value={value || values[name]}
         onBlur={() => setFieldTouched(name, true)}
         invalid={touched[name] && errors[name] ? true : false}
         disabled={disabled}
@@ -52,6 +53,7 @@ CustomInput.propTypes = {
   placeholder: PropTypes.string,
   disabled: PropTypes.bool,
   type: PropTypes.string,
+  value: PropTypes.string,
 };
 
 export default React.memo(CustomInput);
