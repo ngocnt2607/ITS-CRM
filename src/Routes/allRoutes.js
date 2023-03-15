@@ -241,6 +241,9 @@ import OtpList from '../pages/SmsOtpConfig/opt-partner/otp-partner.component';
 //Vendor_Sender
 import VendorSenderList from '../pages/VendorManagement/vendor-sender/vendor-sender.component';
 
+//Service-Config ông chú Khiên
+import ServiceConfigList from '../pages/ConfigManagement/service-config/service-config.component';
+
 //Ticket
 import TicketList from '../pages/Ticket/ticket-its/ticket.component';
 
@@ -403,6 +406,7 @@ const authProtectedRoutes = [
   { path: '/report', component: Report },
   { path: '/sip-detail', component: SipDetail },
   { path: '/contact', component: ContactList },
+  { path: '/service-config', component: ServiceConfigList },
 
   //Icons
   { path: '/icons-remix', component: RemixIcons },

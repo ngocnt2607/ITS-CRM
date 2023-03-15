@@ -82,7 +82,6 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
         test,
         status,
         note,
-        brand_name,
       } = updateRecord;
       const parsedTest = JSON.parse(test.replaceAll("'", '"'));
       const mapTest = parsedTest?.map((item) => ({
@@ -96,7 +95,6 @@ function AddTicket({ isOpen, getList, close, updateRecord, isViewMode }) {
 
       setInitialValues({
         note,
-        brand_name,
         nickname1: generateOption(nickname1, nickname1),
         nickname2: generateOption(nickname2, nickname2),
         nickname3: generateOption(nickname3, nickname3),
