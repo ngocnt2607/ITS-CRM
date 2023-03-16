@@ -243,6 +243,7 @@ import VendorSenderList from '../pages/VendorManagement/vendor-sender/vendor-sen
 
 //Service-Config ông chú Khiên
 import ServiceConfigList from '../pages/ConfigManagement/service-config/service-config.component';
+import ServicePacketList from '../pages/ConfigManagement/service-packet/service-packet.component';
 
 //Ticket
 import TicketList from '../pages/Ticket/ticket-its/ticket.component';
@@ -407,6 +408,7 @@ const authProtectedRoutes = [
   { path: '/sip-detail', component: SipDetail },
   { path: '/contact', component: ContactList },
   { path: '/service-config', component: ServiceConfigList },
+  { path: '/service-packet', component: ServicePacketList },
 
   //Icons
   { path: '/icons-remix', component: RemixIcons },

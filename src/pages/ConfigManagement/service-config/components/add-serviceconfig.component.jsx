@@ -18,7 +18,7 @@ import {
 } from '../../../../helpers/array.helper';
 
 const INIT = {
-  info: [
+  test: [
     {
       nickname: '',
       packetName: '',
@@ -42,8 +42,8 @@ function AddServiceConfig({ isOpen, getList, close, updateRecord, isViewMode }) 
     isBrands: [],
   });
   const TYPE_OPTION = useRef([
-    { label: 'Sử dụng Brand', value: 'Sử dụng Brand' },
-    { label: 'Không dùng Brand', value: 'Không dùng Brand' },
+    { label: 'Sip Trunk', value: 'Sip Trunk' },
+    { label: 'Brand', value: 'Brand' },
   ]).current;
   // const validationSchema = useRef(
   //   Yup.object({
@@ -60,9 +60,9 @@ function AddServiceConfig({ isOpen, getList, close, updateRecord, isViewMode }) 
   useEffect(() => {
     if (updateRecord) {
       const {
-        info,   
+        test,   
       } = updateRecord;
-      const parsedTest = info?.map((item) => ({
+      const mapTest = test?.map((item) => ({
         ...item,
         nickname: generateOption(item.nickname, item.nickname),
         packetName: generateOption(item.packetName, item.packetName),
@@ -71,7 +71,7 @@ function AddServiceConfig({ isOpen, getList, close, updateRecord, isViewMode }) 
       }));
 
       setInitialValues({
-        info: parsedTest,
+        test: mapTest,
       });
       return;
     }
@@ -81,22 +81,23 @@ function AddServiceConfig({ isOpen, getList, close, updateRecord, isViewMode }) 
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const testArray = values.info?.map((item) => ({
+      const testArray = values.test?.map((item) => ({
         ...item,
         nickname: item.nickname?.value || '',
         packetName: item.packetName?.value || '',
         callType: item.callType?.value || '',
+        isBrand: item.isBrand?.value || '',
       }));
       if (updateRecord) {
         await ServiceConfigAPI.updateServiceConfig({
           ...values,
-          info: testArray,
+          test: testArray,
           id: updateRecord.id,
         });
       } else {
         await ServiceConfigAPI.createNewServiceConfig({
           ...values,
-          info: testArray,
+          test: testArray,
         });
       }
       addToast({
@@ -157,10 +158,10 @@ function AddServiceConfig({ isOpen, getList, close, updateRecord, isViewMode }) 
       >
         <ModalHeader>
           {isViewMode
-            ? 'Xem Ticket'
+            ? 'Xem Config'
             : updateRecord
-            ? 'Cập nhật Ticket'
-            : 'Thêm mới Ticket'}
+            ? 'Cập nhật Config'
+            : 'Thêm mới Config'}
           <Button
             type='button'
             onClick={handleClose}
@@ -181,80 +182,76 @@ function AddServiceConfig({ isOpen, getList, close, updateRecord, isViewMode }) 
               return (
                 <Form>
                   <Row>
-                    <FieldArray name='info'>
+                    <FieldArray name='test'>
                       {({ push, remove }) => (
                         <>
-                          {values.info &&
-                            values.info.map((info, index) => (
+                          {values.test &&
+                            values.test.map((test, index) => (
                               <React.Fragment key={index}>
                                 <Col lg={6} className='ml-4 mt-3'>
                                   <CustomSelectComponent
-                                    name={`info[${index}].nickname`}
+                                    name={`test[${index}].nickname`}
                                     label='Đối tác'
                                     options={listData.nicknames}
                                     placeholder='Vui lòng chọn đối tác'
-                                    disabled={isViewMode || !!updateRecord}
+                                    value={test.nickname}
                                   />
                                 </Col>
 
                                   <Col lg={6} className='mt-3'>
                                       <CustomSelectComponent
-                                        name={`info[${index}].packetName`}
+                                        name={`test[${index}].packetName`}
                                         label='Gói cước'
                                         options={listData.packetNames}
                                         placeholder='Vui lòng chọn gói cước'
-                                        isDisabled={
-                                          isViewMode || !!updateRecord
-                                        }
+                                        value={test.packetName}
                                       />
                                     </Col>
 
                                     <Col lg={6} className='mt-3'>
                                       <CustomSelectComponent
-                                        name={`info[${index}].callType`}
+                                        name={`test[${index}].callType`}
                                         label='Loại cuộc gọi'
                                         options={listData.callTypes}
                                         placeholder='Vui lòng chọn loại cuộc gọi'
-                                        isDisabled={isViewMode || !!updateRecord}
+                                        value={test.callType}
                                       />
                                     </Col>
 
                                     <Col lg={6} className='ml-4 mt-3'>
                                       <CustomInputComponent
-                                        name={`info[${index}].price`}
+                                        name={`test[${index}].price`}
                                         label='Giá tiền'
                                         placeholder='Vui lòng nhập giá tiền'
-                                        disabled={isViewMode || !!updateRecord}
+                                        value={test.price}
                                       />
                                     </Col>
 
                                     <Col lg={6} className='ml-4 mt-3'>
                                       <CustomInputComponent
-                                        name={`info[${index}].startDuration`}
+                                        name={`test[${index}].startDuration`}
                                         label='Phút thoại bắt đầu'
                                         placeholder='Vui lòng nhập phút thoại bắt đầu'
-                                        disabled={isViewMode || !!updateRecord}
+                                        value={test.startDuration}
                                       />
                                     </Col>
 
                                     <Col lg={6} className='ml-4 mt-3'>
                                       <CustomInputComponent
-                                        name={`info[${index}].endDuration`}
+                                        name={`test[${index}].endDuration`}
                                         label='Phút thoại kết thúc'
                                         placeholder='Vui lòng nhập phút thoại kết thúc'
-                                        disabled={isViewMode || !!updateRecord}
+                                        value={test.endDuration}
                                       />
                                     </Col>
 
                                     <Col lg={6} className='ml-4 mt-3'>
                                       <CustomSelectComponent
-                                        name={`info[${index}].isBrand`}
+                                        name={`test[${index}].isBrand`}
                                         options={TYPE_OPTION}
                                         label='Loại dịch vụ'
                                         placeholder='Loại dịch vụ'
-                                        isDisabled={
-                                          isViewMode || !!updateRecord
-                                        }
+                                        value={test.isBrand}
                                       />
                                     </Col>
 

@@ -17,10 +17,9 @@ import DataGridComponent from '../../../Components/Common/data-grid/data-grid.co
 import LoadingComponent from '../../../Components/Common/loading.component';
 import SearchComponent from '../../../Components/Common/search.component';
 import { Message } from '../../../shared/const/message.const';
-import ShowHideColumnComponent from '../../../Components/Common/show-hide-column.component';
-import AddServiceConfigComponent from './components/add-serviceconfig.component';
+import AddServicePacketComponent from './components/add-servicepacket.component';
 
-const ServiceConfigList = () => {
+const ServicePacketList = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [searchData, setSearchData] = useState([]);
@@ -56,19 +55,19 @@ const ServiceConfigList = () => {
   const handleDelete = async () => {
     try {
       setLoading(true);
-      await ServiceConfigAPI.deleteServiceConfig(recordId.current);
+      await ServiceConfigAPI.deleteServicePacket(recordId.current);
       addToast({ message: Message.DELETE_SUCCESS, type: 'success' });
-      await getListServiceConfig();
+      await getListServicePacket();
       handleOpenDelete(false);
     } catch (error) {
       setLoading(false);
     }
   };
 
-  const getListServiceConfig = useCallback(async () => {
+  const getListServicePacket = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await ServiceConfigAPI.getServiceConfigList();
+      const response = await ServiceConfigAPI.getServicePacketList();
       setData(response.data);
       setSearchData(response.data);
       setLoading(false);
@@ -78,50 +77,39 @@ const ServiceConfigList = () => {
   }, []);
 
   useEffect(() => {
-    getListServiceConfig();
-  }, [getListServiceConfig]);
+    getListServicePacket();
+  }, [getListServicePacket]);
 
-
-  const [columnConfig, setColumnConfig] = useState([
+  const COLUMN_CONFIG = useRef([
     {
-      field: 'nickname',
-      headerName: 'Đối tác',
-      width: 150,
+      field: 'createdAt',
+      headerName: 'Thời gian tạo',
+      width: 240,
     },
     {
       field: 'packetName',
-      headerName: 'Gói cước',
-      width: 200,
+      headerName: 'Tên gói',
+      width: 300,
     },
     {
-      field: 'callType',
-      headerName: 'Loại cuộc gọi',
-      width: 250,
+      field: 'status',
+      headerName: 'Trạng thái',
+      width: 220,
     },
     {
-      field: 'price',
-      headerName: 'Giá tiền',
-      width: 150,
+      field: 'blockType',
+      headerName: 'Block tính cước',
+      width: 215,
     },
     {
-      field: 'startDuration',
-      headerName: 'Phút thoại bắt đầu',
-      width: 150,  
-    },
-    {
-      field: 'endDuration',
-      headerName: 'Phút thoại kết thúc',
-      width: 180,     
-    },
-    {
-      field: 'isBrand',
-      headerName: 'Loại dịch vụ',
-      width: 250,  
+      field: 'description',
+      headerName: 'Mô tả',
+      width: 300,
     },
     {
       field: 'action',
       headerName: 'Thao tác',
-      width: 250,
+      width: 300,
       sortable: false,
       renderCell: (cellValues) => (
         <>
@@ -134,7 +122,7 @@ const ServiceConfigList = () => {
           </Button>
           <Button
             color='success'
-            size='small' 
+            size='small'
             onClick={() => open(cellValues.row)}
             style={{ marginLeft: 8 }}
           >
@@ -152,28 +140,25 @@ const ServiceConfigList = () => {
         </>
       ),
     },
-  ])
+  ]).current;
 
   const onSearch = (search) => {
     setSearchData(search);
   };
 
-
-  document.title = 'Service Config';
+  document.title = 'Quản lý gói';
 
   return (
     <React.Fragment>
       <LoadingComponent open={loading} />
       <div className='page-content'>
         <Container fluid>
-          <BreadCrumb title='Service Config' pageTitle='Quản lý Config' />
+          <BreadCrumb title='Danh sách gói' pageTitle='Quản lý gói' />
           <Row>
             <Col lg={12}>
               <Card>
                 <CardHeader>
-                  <h4 className='card-title mb-0 flex-grow-1'>
-                    Danh sách Service Config
-                  </h4>
+                  <h4 className='card-title mb-0 flex-grow-1'>Danh sách Gói</h4>
                 </CardHeader>
 
                 <CardBody>
@@ -192,18 +177,13 @@ const ServiceConfigList = () => {
                           </Button>
                         </div>
                       </Col>
-                      <Col className='col-sm d-flex gap-2 justify-content-end'>
+                      <Col className='col-sm'>
                         <SearchComponent data={data} onSearch={onSearch} />
-                        <ShowHideColumnComponent
-                          columns={columnConfig}
-                          setColumns={setColumnConfig}
-                        />
                       </Col>
                     </Row>
 
                     <DataGridComponent
-                      isBreakText
-                      columns={columnConfig}
+                      columns={COLUMN_CONFIG}
                       rows={searchData}
                     />
                   </div>
@@ -220,7 +200,7 @@ const ServiceConfigList = () => {
          id='firstmodal'
          modalClassName='flip'
          centered
-      >
+      >         
         <ModalHeader>
           Xóa bản ghi
           <Button
@@ -252,10 +232,10 @@ const ServiceConfigList = () => {
         </div>
       </Modal>
 
-      <AddServiceConfigComponent
+      <AddServicePacketComponent
         isOpen={openModal.isOpen}
         close={close}
-        getList={getListServiceConfig}
+        getList={getListServicePacket}
         updateRecord={openModal.updateRecord}
         isViewMode={openModal.viewMode}
       />
@@ -263,4 +243,4 @@ const ServiceConfigList = () => {
   );
 };
 
-export default ServiceConfigList;
+export default ServicePacketList;

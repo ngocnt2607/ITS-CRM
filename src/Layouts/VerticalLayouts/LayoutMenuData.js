@@ -530,6 +530,12 @@ const Navdata = () => {
           link: '/service-config',
           parentId: 'configmanagement',
         },
+        {
+          id: 'service-packet',
+          label: 'Service Packet',
+          link: '/service-packet',
+          parentId: 'configmanagement',
+        },
       ],
     },
     // {
