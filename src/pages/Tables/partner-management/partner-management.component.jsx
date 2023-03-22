@@ -10,6 +10,7 @@ import {
   ModalHeader,
   Row,
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import { PartnerAPI } from '../../../api/customer-management.api';
 import addToast from '../../../Components/Common/add-toast.component';
 import BreadCrumb from '../../../Components/Common/BreadCrumb';
@@ -107,10 +108,20 @@ const PartnerListAll = () => {
     { field: 'email', 
       headerName: 'Email', 
       width: 230, 
+      hide: true,
     },
     { field: 'nickname', 
       headerName: 'Tên giao dịch', 
       width: 230,
+    },
+    { field: 'a', 
+      headerName: 'Quản lý gói cước', 
+      width: 230,
+      renderCell: (params) => (
+        <Link to ='/service-config'>
+          {params.value}
+        </Link>
+      ),
     },
     { field: 'phone', 
       headerName: 'Điện thoại công ty', 

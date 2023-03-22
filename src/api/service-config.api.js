@@ -52,4 +52,14 @@ export class ServiceConfigAPI {
     });
   }
 
+  static findServiceConfigList(starttime, endtime, nickname) {
+    const searchParams = new URLSearchParams({
+      starttime,
+      endtime,
+      nickname,
+    }).toString();
+    return httpService.get(`/find_service_config?${searchParams}`, {  
+    });
+  }
+
 }
