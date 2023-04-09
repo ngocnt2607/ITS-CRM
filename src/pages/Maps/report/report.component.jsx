@@ -36,78 +36,65 @@ const Report = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [searchData, setSearchData] = useState([]);
-  const [selectedIP, setSelectedIP] = useState('');
-  const [selectedPartner, setSelectedPartner] = useState('');
   const [widgetsData, setWidgetsData] = useState({});
   const [listData, setListData] = useState({
-    vosips: [],
+    telcos: [],
     nicknames: [],
   });
   const formRef = useRef();
   const validationSchema = useRef(
     Yup.object({
       date: Yup.object({
-        startDate: Yup.string().required('Please pick Date'),
-        endDate: Yup.string().required('Please pick Date'),
+        startDate: Yup.string().required('Vui lòng chọn ngày bắt đầu'),
+        endDate: Yup.string().required('Vui lòng chọn ngày kết thúc'),
       }),
       nickname: Yup.object().nullable(),
-      account: Yup.object().nullable(),
-      vosip: Yup.object().nullable(),
+      telco: Yup.object().nullable(),
     })
   ).current;
-  const [listAccount, setListAccount] = useState({
-    accounts: [],
-  });
-  const [listIp, setListIp] = useState([]);
   const initialValues = useRef({
     date: { startDate: '', endDate: '' },
     nickname: null,
-    vosip: null,
-    account: null,
+    telco: null,
   }).current;
   const [columnConfig, setColumnConfig] = useState([
     {
       field: 'createdtime',
       headerName: 'Thời gian',
-      width: 100,
+      width: 130,
     },
     {
       field: 'nickname',
       headerName: 'Mã đối tác',
-      width: 160,
-    },
-    {
-      field: 'name',
-      headerName: 'Tài khoản',
-      width: 160,
+      width: 180,
     },
     {
       field: 'servicename',
       headerName: 'Tên dịch vụ',
-      width: 160,
+      width: 180,
     },
     {
       field: 'calltotal',
       headerName: 'Tổng call',
-      width: 100,
+      width: 130,
       sortComparator: formatNumberComparator,
     },
     {
       field: 'callsuccess',
       headerName: 'Call Success',
-      width: 120,
+      width: 130,
       sortComparator: formatNumberComparator,
     },
     {
       field: 'callmiss',
       headerName: 'Call Miss',
-      width: 100,
+      width: 130,
       sortComparator: formatNumberComparator,
     },
     {
       field: 'callrate',
       headerName: 'Tỉ lệ cuộc gọi lỗi',
-      width: 150,
+      width: 160,
     },
     {
       field: 'voicetime',
@@ -173,8 +160,7 @@ const Report = () => {
           ...item,
           calltotal: nf.format(item?.['calltotal']),
           callsuccess: nf.format(item?.['callsuccess']),
-          callmiss: nf.format(item?.['callerror480']),
-          // callrate: nf.format(item?.['callerror503']),
+          callmiss: nf.format(item?.['callmiss']),
           voicetime: nf.format(item?.['voicetime']),
           revenue: nf.format(item?.['revenue']),
           offnet_callsuccess: nf.format(item?.['offnet_callsuccess']),
@@ -186,38 +172,6 @@ const Report = () => {
         };
       }) || []
     );
-  };
-
-  const get30DaysValue = (data = []) => {
-    let count = 0;
-    const chart = {
-      labels: [],
-      data: [],
-    };
-    const tempValue = {
-      labels: '',
-      revenue: 0,
-    };
-    for (let i = 0; i < data.length; i++) {
-      const item = data[i];
-      if (
-        !!i &&
-        (item.createdtime !== tempValue.labels || i === data.length - 1)
-      ) {
-        chart.labels.push(tempValue.labels);
-        chart.data.push(tempValue.revenue);
-        tempValue.revenue = 0;
-        count += 1;
-      }
-
-      tempValue.labels = item.createdtime;
-      tempValue.revenue += item.revenue;
-
-      if (count === 30) {
-        break;
-      }
-    }
-    return chart;
   };
 
   const getInitialData = useCallback(async () => {
@@ -241,13 +195,13 @@ const Report = () => {
   }, [getInitialData]);
 
   const getListData = useCallback(async () => {
-    const listAPI = [PartnerDetailAPI.getListIP, PartnerAPI.getListPartner];
+    const listAPI = [PartnerDetailAPI.getTelco, PartnerAPI.getListPartner];
     try {
       setLoading(true);
       const response = await Promise.all(listAPI.map((api) => api()));
       setListData((prev) => ({
         ...prev,
-        vosips: getListOption(response[0]?.data, 'name', 'name'),
+        telcos: getListOption(response[0]?.data, 'name', 'name'),
         nicknames: getListOption(response[1]?.data, 'nickname', 'nickname'),
       }));
       setLoading(false);
@@ -260,99 +214,19 @@ const Report = () => {
     getListData();
   }, [getListData]);
 
-  useLayoutEffect(() => {
-    const handleCallAPI = async () => {
-      const listAPI = [ReportAPI.getVosIp];
-      try {
-        setLoading(true);
-        const response = await Promise.all(
-          listAPI.map((api) => api(selectedPartner))
-        );
-        setListIp(getListOption(response[0]?.data, 'name', 'name'));
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-      }
-    };
-    if (formRef.current) {
-      formRef.current.setFieldValue('vosip', null);
-    }
-    if (selectedPartner) {
-      handleCallAPI();
-    } else {
-      setListIp([]);
-    }
-  }, [selectedPartner]);
-
-  useLayoutEffect(() => {
-    const handleCallAPI = async () => {
-      const listAPI1 = [ReportAPI.getAccountReport];
-      try {
-        setLoading(true);
-        const response = await Promise.all(
-          listAPI1.map((api) => api(selectedPartner, selectedIP))
-        );
-        setListAccount({
-          accounts: getListOption(response[0]?.data, 'name', 'name'),
-        });
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-      }
-    };
-    if (formRef.current) {
-      formRef.current.setFieldValue('account', null);
-    }
-    if (selectedPartner && selectedIP) {
-      handleCallAPI();
-    } else {
-      setListAccount({ accounts: [] });
-    }
-  }, [selectedPartner, selectedIP]);
-
-  const handleChangeSelectedPartner = (value) => {
-    setSelectedPartner(value);
-  };
-
-  const handleChangeSelectedIP = (value) => {
-    setSelectedIP(value);
-  };
-
   const onSearch = (search) => {
     setSearchData(search);
   };
 
-  // const handleChangeNickname = (value) => {
-  //   formRef.current?.setFieldValue('account', null);
-  //   formRef.current?.setFieldValue('vosip', null);
-  //   setAccounts(
-  //     listAllAccounts.current.reduce((prev, current) => {
-  //       if (current.partnerid === value.partnerid && current.vosip === value.vosip) {
-  //         prev.push(generateOption(current.account, current.id));
-  //       }
-  //       return prev;
-  //     }, [])
-  //   );
-  //   setVosips(
-  //     listAllVosips.current.reduce((prev, current) => {
-  //       if (current.partnerid === value) {
-  //         prev.push(generateOption(current.vosip, current.vosip));
-  //       }
-  //       return prev;
-  //     }, [])
-  //   );
-  // };
-
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const { date, nickname, vosip, account } = values;
+      const { date, nickname, telco } = values;
       const response = await ReportAPI.findReportList(
         date.startDate,
         date.endDate,
         nickname?.value || '',
-        vosip?.value || '',
-        account?.value || ''
+        telco?.value || '',
       );
       const mapData1 = convertData(response?.data);
       setData(mapData1);
@@ -393,24 +267,14 @@ const Report = () => {
                     options={listData.nicknames}
                     name='nickname'
                     placeholder='Chọn đối tác'
-                    onChange={handleChangeSelectedPartner}
                   />
                 </Col>
 
                 <Col lg={2}>
                   <CustomSelectComponent
-                    options={listIp}
-                    name='vosip'
-                    placeholder='Chọn Server VOS'
-                    onChange={handleChangeSelectedIP}
-                  />
-                </Col>
-
-                <Col lg={2}>
-                  <CustomSelectComponent
-                    options={listAccount.accounts}
-                    name='account'
-                    placeholder='Chọn tài khoản'
+                    options={listData.telcos}
+                    name='telco'
+                    placeholder='Chọn nhà mạng'
                   />
                 </Col>
 
@@ -449,19 +313,6 @@ const Report = () => {
 
                 <CardBody>
                   <div id='table-gridjs'>
-                    {/* <Row className='g-4 mb-3'>
-                      <Col className='col-sm'>
-                        <SearchComponent data={data} onSearch={onSearch} />
-                      </Col>
-                      <Col className='col-sm d-flex gap-2 justify-content-end'>
-                        <SearchComponent data={data} onSearch={onSearch} />
-                        <ShowHideColumnComponent
-                          columns={columnConfig}
-                          setColumns={setColumnConfig}
-                        />
-                      </Col>
-                    </Row> */}
-
                     <DataGridComponent
                       isBreakText
                       columns={columnConfig}

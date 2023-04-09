@@ -30,24 +30,23 @@ export class ReportAPI {
     });
   }
 
-  static findReportList(starttime, endtime, nickname, vosip, account) {
+  static findReportList(starttime, endtime, nickname, telco) {
     const searchParams = new URLSearchParams({
       starttime,
       endtime,
       nickname,
-      vosip,
-      account,
+      telco,
     }).toString();
     return httpService.get(`/findreport?${searchParams}`, {     
     });
   }
 
-  static findReportCustomerList(starttime, endtime, nickname, account) {
+  static findReportCustomerList(starttime, endtime, nickname, telco) {
     const searchParams = new URLSearchParams({
       starttime,
       endtime,
       nickname,
-      account,
+      telco,
     }).toString();
     return httpService.get(`/findreport_customer?${searchParams}`, {     
     });

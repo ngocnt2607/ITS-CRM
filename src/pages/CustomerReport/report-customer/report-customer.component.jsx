@@ -12,6 +12,7 @@ import {
 import * as Yup from 'yup';
 import { PartnerAPI } from '../../../api/customer-management.api';
 import { ReportAPI } from '../../../api/report.api';
+import { PartnerDetailAPI } from '../../../api/partnerdetail.api';
 import BreadCrumb from '../../../Components/Common/BreadCrumb';
 import CalendarComponent from '../../../Components/Common/calendar/calendar.component';
 import CustomSelectComponent from '../../../Components/Common/custom-select/custom-select.component';
@@ -34,6 +35,10 @@ const ReportCustomer = () => {
   const [widgetsData, setWidgetsData] = useState({});
   const searchValues = useRef(undefined);
   const formRef = useRef();
+  const [listData, setListData] = useState({
+    telcos: [],
+    nicknames: [],
+  });
   const validationSchema = useRef(
     Yup.object({
       date: Yup.object({
@@ -41,40 +46,35 @@ const ReportCustomer = () => {
         endDate: Yup.string().required('Vui lòng chọn ngày kết thúc'),
       }),
       nickname: Yup.object().nullable(),
-      account: Yup.object().nullable(),
+      telco: Yup.object().nullable(),
     })
   ).current;
   const listAllAccounts = useRef([]);
   const initialValues = useRef({
     date: { startDate: '', endDate: '' },
     nickname: null,
-    account: null,
+    telco: null,
   }).current;
   const [columnConfig, setColumnConfig] = useState([
     {
       field: 'createdtime',
       headerName: 'Thời gian',
-      width: 120,
+      width: 150,
     },
     {
       field: 'nickname',
       headerName: 'Mã đối tác',
-      width: 190,
-    },
-    {
-      field: 'name',
-      headerName: 'Tài khoản',
-      width: 190,
+      width: 200,
     },
     {
       field: 'servicename',
       headerName: 'Tên dịch vụ',
-      width: 160,
+      width: 200,
     },
     {
       field: 'calltotal',
       headerName: 'Tổng call',
-      width: 150,
+      width: 170,
       sortComparator: formatNumberComparator,
     },
     {
@@ -92,7 +92,7 @@ const ReportCustomer = () => {
     {
       field: 'callrate',
       headerName: 'Tỉ lệ cuộc gọi lỗi',
-      width: 160,
+      width: 200,
       sortComparator: formatNumberComparator,
     },
     {
@@ -104,7 +104,7 @@ const ReportCustomer = () => {
     {
       field: 'revenue',
       headerName: 'Doanh thu ngày',
-      width: 160,
+      width: 200,
       sortComparator: formatNumberComparator,
     },
   ]);
@@ -117,7 +117,7 @@ const ReportCustomer = () => {
           ...item,
           calltotal: nf.format(item?.['calltotal']),
           callsuccess: nf.format(item?.['callsuccess']),
-          callmiss: nf.format(item?.['callerror480']),
+          callmiss: nf.format(item?.['callmiss']),
           // callrate: nf.format(item?.['callerror503']),
           voicetime: nf.format(item?.['voicetime']),
           revenue: nf.format(item?.['revenue']),
@@ -170,17 +170,17 @@ const ReportCustomer = () => {
       setLoading(true);
       const response = await Promise.all([
         ReportAPI.getReportList(),
-        PartnerAPI.getListPartner(),
-        PartnerAPI.getListAccountByPartner(),
+        // PartnerAPI.getListPartner(),
+        // PartnerAPI.getListAccountByPartner(),
         ReportAPI.getTotalReport(),
       ]);
-      setPartners(getListOption(response[1].data, 'nickname', 'id'));
-      setAccounts(getListOption(response[2].data, 'account', 'id'));
-      listAllAccounts.current = response[2].data;
+      // setPartners(getListOption(response[1].data, 'nickname', 'id'));
+      // setAccounts(getListOption(response[2].data, 'account', 'id'));
+      // listAllAccounts.current = response[2].data;
       const mapData = convertData(response[0]?.data);
       setData(mapData);
       setSearchData(mapData);
-      setWidgetsData(response[3]?.data?.[0]);
+      setWidgetsData(response[1]?.data?.[0]);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -191,21 +191,41 @@ const ReportCustomer = () => {
     getInitialData();
   }, [getInitialData]);
 
+  const getListData = useCallback(async () => {
+    const listAPI = [PartnerDetailAPI.getTelco, PartnerAPI.getListPartner];
+    try {
+      setLoading(true);
+      const response = await Promise.all(listAPI.map((api) => api()));
+      setListData((prev) => ({
+        ...prev,
+        telcos: getListOption(response[0]?.data, 'name', 'name'),
+        nicknames: getListOption(response[1]?.data, 'nickname', 'nickname'),
+      }));
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    getListData();
+  }, [getListData]);
+
   const onSearch = (search) => {
     setSearchData(search);
   };
 
-  const handleChangeNickname = (value) => {
-    formRef.current?.setFieldValue('account', null);
-    setAccounts(
-      listAllAccounts.current.reduce((prev, current) => {
-        if (current.partnerid === value) {
-          prev.push(generateOption(current.account, current.id));
-        }
-        return prev;
-      }, [])
-    );
-  };
+  // const handleChangeNickname = (value) => {
+  //   formRef.current?.setFieldValue('account', null);
+  //   setAccounts(
+  //     listAllAccounts.current.reduce((prev, current) => {
+  //       if (current.partnerid === value) {
+  //         prev.push(generateOption(current.account, current.id));
+  //       }
+  //       return prev;
+  //     }, [])
+  //   );
+  // };
 
   // const handleSubmit = async (values) => {
   //   try {
@@ -229,14 +249,8 @@ const ReportCustomer = () => {
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const params = convertParams(values);
-      // const { date } = values;
-      const response = await ReportAPI.findReportCustomerList(
-        params.starttime,
-        params.endtime,
-        params.selectedPartner || '',
-        params.selectedAccount || ''
-      );
+      const { starttime, endtime, selectedPartner, selectedAccount } = convertParams(values);
+      const response = await ReportAPI.findReportList(starttime, endtime, selectedPartner, selectedAccount);
       searchValues.current = values;
       const mapData1 = convertData(response?.data);
       setData(mapData1);
@@ -247,16 +261,14 @@ const ReportCustomer = () => {
       setLoading(false);
     }
   };
-
+  
   const convertParams = (values) => {
-    const { date, nickname, account } = values;
-    const starttime = date?.startDate || '';
-    const endtime = date?.endDate || '';
-    const selectedPartner = nickname?.value || '';
-    const selectedAccount = account?.value || '';
+    const { startDate, endDate } = values.date || {};
+    const selectedPartner = values.nickname?.value ?? '';
+    const selectedAccount = values.telco?.value ?? '';
     return {
-      starttime,
-      endtime,
+      starttime: startDate ?? '',
+      endtime: endDate ?? '',
       selectedPartner,
       selectedAccount
     };
@@ -305,18 +317,18 @@ const ReportCustomer = () => {
 
                 <Col lg={3}>
                   <CustomSelectComponent
-                    options={partners}
+                    options={listData.nicknames}
                     name='nickname'
                     placeholder='Chọn đối tác'
-                    onChange={handleChangeNickname}
+                    // onChange={handleChangeNickname}
                   />
                 </Col>
 
                 <Col lg={3}>
                   <CustomSelectComponent
-                    options={accounts}
-                    name='account'
-                    placeholder='Chọn tài khoản'
+                    options={listData.telcos}
+                    name='telco'
+                    placeholder='Chọn nhà mạng'
                   />
                 </Col>
 

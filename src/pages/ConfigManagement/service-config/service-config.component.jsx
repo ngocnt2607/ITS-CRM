@@ -38,23 +38,23 @@ const ServiceConfigList = () => {
     viewMode: false,
     updateRecord: null,
   });
-  const [listData, setListData] = useState({
-    nicknames: [],
-  });
-  const validationSchema = useRef(
-    Yup.object({
-      date: Yup.object({
-        startDate: Yup.string().required('Please pick Date'),
-        endDate: Yup.string().required('Please pick Date'),
-      }),
-      nickname : Yup.object().nullable(),
+  // const [listData, setListData] = useState({
+  //   nicknames: [],
+  // });
+  // const validationSchema = useRef(
+  //   Yup.object({
+  //     date: Yup.object({
+  //       startDate: Yup.string().required('Please pick Date'),
+  //       endDate: Yup.string().required('Please pick Date'),
+  //     }),
+  //     nickname : Yup.object().nullable(),
       
-    })
-  ).current;
-  const initialValues = useRef({
-    date: { startDate: '', endDate: '' },
-    customer_code: '',
-  }).current;
+  //   })
+  // ).current;
+  // const initialValues = useRef({
+  //   date: { startDate: '', endDate: '' },
+  //   customer_code: '',
+  // }).current;
 
   const open = (updateRecord, viewMode = false) => {
     setOpenModal({
@@ -187,41 +187,41 @@ const ServiceConfigList = () => {
     setSearchData(search);
   };
 
-  const getListData = useCallback(async () => {
-    const listAPI = [PartnerDetailAPI.getPartner];
-    try {
-      setLoading(true);
-      const response = await Promise.all(listAPI.map((api) => api()));
-      setListData((prev) => ({
-        ...prev,
-        nicknames: getListOption(response[0]?.data, 'nickname', 'nickname'),
-      }));
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
-  }, []);
+  // const getListData = useCallback(async () => {
+  //   const listAPI = [PartnerDetailAPI.getPartner];
+  //   try {
+  //     setLoading(true);
+  //     const response = await Promise.all(listAPI.map((api) => api()));
+  //     setListData((prev) => ({
+  //       ...prev,
+  //       nicknames: getListOption(response[0]?.data, 'nickname', 'nickname'),
+  //     }));
+  //     setLoading(false);
+  //   } catch (error) {
+  //     setLoading(false);
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    getListData();
-  }, [getListData]);
+  // useEffect(() => {
+  //   getListData();
+  // }, [getListData]);
 
-  const handleSubmit = async (values) => {
-    try {
-      setLoading(true);
-      const { date, nickname } = values;
-      const response = await ServiceConfigAPI.findServiceConfigList(
-        date.startDate,
-        date.endDate,
-        nickname?.value || '',
-      );
-      setData(response.data);
-      setSearchData(response.data);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
-  };
+  // const handleSubmit = async (values) => {
+  //   try {
+  //     setLoading(true);
+  //     const { date, nickname } = values;
+  //     const response = await ServiceConfigAPI.findServiceConfigList(
+  //       date.startDate,
+  //       date.endDate,
+  //       nickname?.value || '',
+  //     );
+  //     setData(response.data);
+  //     setSearchData(response.data);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     setLoading(false);
+  //   }
+  // };
 
 
   document.title = 'Service Config';
@@ -233,7 +233,7 @@ const ServiceConfigList = () => {
         <Container fluid>
           <BreadCrumb title='Service Config' pageTitle='Quản lý Config' />
 
-          <Formik
+          {/* <Formik
             enableReinitialize
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -266,7 +266,7 @@ const ServiceConfigList = () => {
                 </Col>
               </Row>
             </Form>
-          </Formik>
+          </Formik> */}
           <Row>
             <Col lg={12}>
               <Card>
