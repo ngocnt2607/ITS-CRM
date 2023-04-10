@@ -29,7 +29,6 @@ const ReportDetail = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [searchData, setSearchData] = useState([]);
-  const [widgetsData, setWidgetsData] = useState({});
   const searchValues = useRef(undefined);
   const formRef = useRef();
   const [listData, setListData] = useState({
@@ -41,7 +40,7 @@ const ReportDetail = () => {
         startDate: Yup.string().required('Vui lòng chọn ngày bắt đầu'),
         endDate: Yup.string().required('Vui lòng chọn ngày kết thúc'),
       }),
-      nickname: Yup.object().nullable().required('Vui lòng chọn khách hàng'),
+      nickname: Yup.object().nullable(),
     })
   ).current;
   const initialValues = useRef({
@@ -52,22 +51,22 @@ const ReportDetail = () => {
     {
       field: 'startTime',
       headerName: 'Thời gian bắt đầu',
-      width: 200,
+      width: 180,
     },
     {
       field: 'stopTime',
       headerName: 'Thời gian kết thúc',
-      width: 200,
+      width: 180,
     },
     {
       field: 'caller',
       headerName: 'Số gọi',
-      width: 150,
+      width: 140,
     },
     {
       field: 'callerTelcoId',
       headerName: 'Nhà mạng gọi đi',
-      width: 170,
+      width: 150,
     },
     {
       field: 'callee',
@@ -82,7 +81,7 @@ const ReportDetail = () => {
     {
       field: 'callerRtpIp',
       headerName: 'Ip RTP gọi đi',
-      width: 200,
+      width: 150,
     },
     {
       field: 'billTime',
@@ -134,7 +133,7 @@ const ReportDetail = () => {
     {
       field: 'partnerTag',
       headerName: 'Thẻ đối tác',
-      width: 150,
+      width: 120,
     },
     {
       field: 'partner01',
@@ -195,14 +194,13 @@ const ReportDetail = () => {
   }, [getInitialData]);
 
   const getListData = useCallback(async () => {
-    const listAPI = [PartnerDetailAPI.getTelco, PartnerAPI.getListPartner];
+    const listAPI = [PartnerAPI.getListPartner];
     try {
       setLoading(true);
       const response = await Promise.all(listAPI.map((api) => api()));
       setListData((prev) => ({
         ...prev,
-        telcos: getListOption(response[0]?.data, 'name', 'name'),
-        nicknames: getListOption(response[1]?.data, 'nickname', 'nickname'),
+        nicknames: getListOption(response[0]?.data, 'nickname', 'nickname'),
       }));
       setLoading(false);
     } catch (error) {
@@ -221,13 +219,12 @@ const ReportDetail = () => {
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const { starttime, endtime, selectedPartner, selectedAccount } = convertParams(values);
-      const response = await ReportAPI.findReportList(starttime, endtime, selectedPartner, selectedAccount);
+      const { starttime, endtime, selectedPartner } = convertParams(values);
+      const response = await ReportAPI.findReportDetailList(starttime, endtime, selectedPartner);
       searchValues.current = values;
       const mapData1 = convertData(response?.data);
       setData(mapData1);
       setSearchData(mapData1);
-      setWidgetsData(response.total?.[0]);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -237,19 +234,17 @@ const ReportDetail = () => {
   const convertParams = (values) => {
     const { startDate, endDate } = values.date || {};
     const selectedPartner = values.nickname?.value ?? '';
-    const selectedAccount = values.telco?.value ?? '';
     return {
       starttime: startDate ?? '',
       endtime: endDate ?? '',
       selectedPartner,
-      selectedAccount
     };
   };
 
   const handleDownload = async () => {
     try {
       setLoading(true);
-      const result = await ReportAPI.downloadReport(
+      const result = await ReportAPI.downloadReportDetail(
         convertParams(searchValues.current)
       );
       const url = window.URL.createObjectURL(result.data);

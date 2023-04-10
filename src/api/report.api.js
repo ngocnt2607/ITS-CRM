@@ -12,12 +12,20 @@ export class ReportAPI {
   }
 
   static getReportDetail() {
-    return httpService.get('/report_detail', {      
+    const currentPage = 2
+    return httpService.get(`/report_detail?offset=${currentPage}`, {      
     });
   }
 
   static downloadReport(body) {
     return httpService.post('/download_report', {
+      body,     
+      responseType: 'blob',
+    });
+  }
+
+  static downloadReportDetail(body) {
+    return httpService.post('/download_report_detail', {
       body,     
       responseType: 'blob',
     });
@@ -43,6 +51,16 @@ export class ReportAPI {
       telco,
     }).toString();
     return httpService.get(`/findreport?${searchParams}`, {     
+    });
+  }
+
+  static findReportDetailList(starttime, endtime, nickname) {
+    const searchParams = new URLSearchParams({
+      starttime,
+      endtime,
+      nickname,
+    }).toString();
+    return httpService.get(`/find_report_detail?${searchParams}`, {     
     });
   }
 
