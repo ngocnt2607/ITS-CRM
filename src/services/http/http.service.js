@@ -91,7 +91,7 @@ export class HttpService {
           window.location.href = '/login';
         } else {
           addToast({
-            message: err.response?.data?.message || Message.LOGIN_ERROR,
+            message: err.response?.data?.NOTOK || Message.COMMON_ERROR,
             type: 'error',
           });
         }

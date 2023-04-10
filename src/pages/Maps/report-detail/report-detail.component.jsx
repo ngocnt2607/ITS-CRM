@@ -227,10 +227,16 @@ const ReportDetail = () => {
   };
 
   const handleSubmit = async (values) => {
+    const converted = convertParams(values);
+    searchValues.current = converted;
+
+    if (page !== 1) {
+      setPage(1);
+      return;
+    }
+
     try {
       setLoading(true);
-      const converted = convertParams(values);
-      searchValues.current = converted;
       const { starttime, endtime, selectedPartner } = converted;
       const response = await ReportAPI.findReportDetailList({
         starttime,
@@ -353,6 +359,7 @@ const ReportDetail = () => {
                       rows={searchData}
                       totalPage={totalPage}
                       handleChangePage={(newPage) => setPage(newPage)}
+                      page={page}
                     />
                   </div>
                 </CardBody>

@@ -80,6 +80,7 @@ const CustomDataGrid = (props) => {
     onMultipleDelete,
     handleChangePage,
     totalPage,
+    page,
     isDisplayPagination = false,
   } = props;
   const isMultipleSelect = !!onMultipleDelete;
@@ -119,6 +120,7 @@ const CustomDataGrid = (props) => {
             onChange={(e, page) => handleChangePage(page)}
             variant='outlined'
             color='primary'
+            page={page}
           />
         </Stack>
       )}
@@ -135,6 +137,7 @@ CustomDataGrid.propTypes = {
   handleChangePage: PropTypes.func,
   totalPage: PropTypes.number,
   isDisplayPagination: PropTypes.bool,
+  page: PropTypes.number,
 };
 
 export default React.memo(CustomDataGrid);
