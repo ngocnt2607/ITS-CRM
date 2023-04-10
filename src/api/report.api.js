@@ -2,45 +2,43 @@ import httpService from '../services/http/http.service';
 
 export class ReportAPI {
   static getReportList() {
-    return httpService.get('/report', {     
-    });
+    return httpService.get('/report', {});
   }
 
   static getTotalReport() {
-    return httpService.get('/totalreport', {      
-    });
+    return httpService.get('/totalreport', {});
   }
 
-  static getReportDetail() {
-    const currentPage = 2
-    return httpService.get(`/report_detail?offset=${currentPage}`, {      
+  static getReportDetail(offset) {
+    return httpService.get(`/report_detail`, {
+      queryParams: {
+        offset,
+      },
     });
   }
 
   static downloadReport(body) {
     return httpService.post('/download_report', {
-      body,     
+      body,
       responseType: 'blob',
     });
   }
 
   static downloadReportDetail(body) {
     return httpService.post('/download_report_detail', {
-      body,     
+      body,
       responseType: 'blob',
     });
   }
 
   static getVosIp(nickname) {
     const searchParams = new URLSearchParams({ nickname }).toString();
-    return httpService.get(`/list_ip_partnerdetail?${searchParams}`, {      
-    });
+    return httpService.get(`/list_ip_partnerdetail?${searchParams}`, {});
   }
 
   static getAccountReport(nickname, vosip) {
-    const searchParams = new URLSearchParams({ nickname, vosip  }).toString();
-    return httpService.get(`/list_acount_partnerdetail?${searchParams}`, {      
-    });
+    const searchParams = new URLSearchParams({ nickname, vosip }).toString();
+    return httpService.get(`/list_acount_partnerdetail?${searchParams}`, {});
   }
 
   static findReportList(starttime, endtime, nickname, telco) {
@@ -50,17 +48,17 @@ export class ReportAPI {
       nickname,
       telco,
     }).toString();
-    return httpService.get(`/findreport?${searchParams}`, {     
-    });
+    return httpService.get(`/findreport?${searchParams}`, {});
   }
 
-  static findReportDetailList(starttime, endtime, nickname) {
-    const searchParams = new URLSearchParams({
-      starttime,
-      endtime,
-      nickname,
-    }).toString();
-    return httpService.get(`/find_report_detail?${searchParams}`, {     
+  static findReportDetailList({ starttime, endtime, nickname, offset }) {
+    return httpService.get(`/find_report_detail`, {
+      queryParams: {
+        starttime,
+        endtime,
+        nickname,
+        offset,
+      },
     });
   }
 
@@ -71,7 +69,6 @@ export class ReportAPI {
       nickname,
       telco,
     }).toString();
-    return httpService.get(`/findreport_customer?${searchParams}`, {     
-    });
+    return httpService.get(`/findreport_customer?${searchParams}`, {});
   }
 }

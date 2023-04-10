@@ -26,10 +26,12 @@ import ShowHideColumnComponent from '../../../Components/Common/show-hide-column
 import { formatNumberComparator } from '../../../helpers/sort-table.helper';
 
 const ReportDetail = () => {
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [searchData, setSearchData] = useState([]);
-  const searchValues = useRef(undefined);
+  const searchValues = useRef({});
   const formRef = useRef();
   const [listData, setListData] = useState({
     nicknames: [],
@@ -177,17 +179,25 @@ const ReportDetail = () => {
   const getInitialData = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await Promise.all([
-        ReportAPI.getReportDetail(),
-      ]);
-      const mapData = convertData(response[0]?.data);
+      const { starttime, endtime, selectedPartner } = searchValues.current;
+      const hasSearch = starttime && endtime;
+      const response = await (hasSearch
+        ? ReportAPI.findReportDetailList({
+            starttime: starttime,
+            endtime: endtime,
+            nickname: selectedPartner,
+            offset: page,
+          })
+        : ReportAPI.getReportDetail(page));
+      const mapData = convertData(response?.data);
+      setTotalPage(response?.total_page);
       setData(mapData);
       setSearchData(mapData);
       setLoading(false);
     } catch (error) {
       setLoading(false);
     }
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     getInitialData();
@@ -219,10 +229,17 @@ const ReportDetail = () => {
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const { starttime, endtime, selectedPartner } = convertParams(values);
-      const response = await ReportAPI.findReportDetailList(starttime, endtime, selectedPartner);
-      searchValues.current = values;
+      const converted = convertParams(values);
+      searchValues.current = converted;
+      const { starttime, endtime, selectedPartner } = converted;
+      const response = await ReportAPI.findReportDetailList({
+        starttime,
+        endtime,
+        nickname: selectedPartner,
+        offset: 1,
+      });
       const mapData1 = convertData(response?.data);
+      setTotalPage(response?.total_page);
       setData(mapData1);
       setSearchData(mapData1);
       setLoading(false);
@@ -230,7 +247,7 @@ const ReportDetail = () => {
       setLoading(false);
     }
   };
-  
+
   const convertParams = (values) => {
     const { startDate, endDate } = values.date || {};
     const selectedPartner = values.nickname?.value ?? '';
@@ -244,9 +261,7 @@ const ReportDetail = () => {
   const handleDownload = async () => {
     try {
       setLoading(true);
-      const result = await ReportAPI.downloadReportDetail(
-        convertParams(searchValues.current)
-      );
+      const result = await ReportAPI.downloadReportDetail(searchValues.current);
       const url = window.URL.createObjectURL(result.data);
       const link = document.createElement('a');
       link.href = url;
@@ -301,11 +316,11 @@ const ReportDetail = () => {
 
                 <Col lg={6}>
                   <Button
-                     color='success'
-                     className='add-btn'
-                     onClick={handleDownload}
-                   >
-                     Tải về
+                    color='success'
+                    className='add-btn'
+                    onClick={handleDownload}
+                  >
+                    Tải về
                   </Button>
                 </Col>
               </Row>
@@ -320,21 +335,24 @@ const ReportDetail = () => {
                     Chi tiết Doanh thu
                   </h3> */}
                   <Col className='col-sm d-flex gap-2 justify-content-end'>
-                        <h2 className='card-title mb-0 flex-grow-1'>
-                          Chi tiết CDR
-                        </h2>
-                        <ShowHideColumnComponent
-                          columns={columnConfig}
-                          setColumns={setColumnConfig}
-                        />
-                      </Col>
+                    <h2 className='card-title mb-0 flex-grow-1'>
+                      Chi tiết CDR
+                    </h2>
+                    <ShowHideColumnComponent
+                      columns={columnConfig}
+                      setColumns={setColumnConfig}
+                    />
+                  </Col>
                 </CardHeader>
 
                 <CardBody>
                   <div id='table-gridjs'>
                     <DataGridComponent
+                      isDisplayPagination
                       columns={columnConfig}
                       rows={searchData}
+                      totalPage={totalPage}
+                      handleChangePage={(newPage) => setPage(newPage)}
                     />
                   </div>
                 </CardBody>

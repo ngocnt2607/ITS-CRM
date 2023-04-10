@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import './data-grid.style.scss';
 import { Button, Modal, ModalHeader, Spinner } from 'reactstrap';
 import clsx from 'clsx';
+import { Pagination, Stack } from '@mui/material';
 
 export function NewToolbar({ handleDelete }) {
   const gridContext = React.useContext(GridApiContext);
@@ -77,34 +78,51 @@ const CustomDataGrid = (props) => {
     pageSize = 50,
     isBreakText = false,
     onMultipleDelete,
+    handleChangePage,
+    totalPage,
+    isDisplayPagination = false,
   } = props;
   const isMultipleSelect = !!onMultipleDelete;
 
   return (
-    <div className='data-grid'>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={pageSize}
-        rowsPerPageOptions={[50]}
-        className={clsx({ 'break-text': isBreakText })}
-        disableColumnMenu
-        rowHeight={47}
-        hideFooterSelectedRowCount
-        checkboxSelection={isMultipleSelect}
-        disableSelectionOnClick={isMultipleSelect}
-        components={{
-          Toolbar: isMultipleSelect ? NewToolbar : null,
-        }}
-        componentsProps={{
-          toolbar: isMultipleSelect
-            ? {
-                handleDelete: onMultipleDelete,
-              }
-            : null,
-        }}
-      />
-    </div>
+    <>
+      <div className='data-grid'>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={pageSize}
+          rowsPerPageOptions={[50]}
+          className={clsx({ 'break-text': isBreakText })}
+          disableColumnMenu
+          rowHeight={47}
+          hideFooter={isDisplayPagination}
+          hideFooterSelectedRowCount
+          checkboxSelection={isMultipleSelect}
+          disableSelectionOnClick={isMultipleSelect}
+          components={{
+            Toolbar: isMultipleSelect ? NewToolbar : null,
+          }}
+          componentsProps={{
+            toolbar: isMultipleSelect
+              ? {
+                  handleDelete: onMultipleDelete,
+                }
+              : null,
+          }}
+        />
+      </div>
+
+      {isDisplayPagination && (
+        <Stack direction='row' justifyContent='flex-end' marginTop={1}>
+          <Pagination
+            count={totalPage}
+            onChange={(e, page) => handleChangePage(page)}
+            variant='outlined'
+            color='primary'
+          />
+        </Stack>
+      )}
+    </>
   );
 };
 
@@ -114,6 +132,9 @@ CustomDataGrid.propTypes = {
   pageSize: PropTypes.number,
   onMultipleDelete: PropTypes.func,
   isBreakText: PropTypes.bool,
+  handleChangePage: PropTypes.func,
+  totalPage: PropTypes.number,
+  isDisplayPagination: PropTypes.bool,
 };
 
 export default React.memo(CustomDataGrid);
