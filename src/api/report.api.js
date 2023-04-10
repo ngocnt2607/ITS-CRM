@@ -11,6 +11,11 @@ export class ReportAPI {
     });
   }
 
+  static getReportDetail() {
+    return httpService.get('/report_detail', {      
+    });
+  }
+
   static downloadReport(body) {
     return httpService.post('/download_report', {
       body,     

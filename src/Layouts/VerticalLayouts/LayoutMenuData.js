@@ -142,6 +142,12 @@ const Navdata = () => {
           parentId: 'report',
         },
         {
+          id: 'reprot-detail',
+          label: 'Chi tiết cước',
+          link: '/report-detail',
+          parentId: 'report',
+        },
+        {
           id: 'totalreport',
           label: 'Doanh thu tổng',
           link: '/totalreport',

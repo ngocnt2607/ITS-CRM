@@ -140,6 +140,7 @@ import LineAwesomeIcons from '../pages/Icons/LineAwesomeIcons/LineAwesomeIcons';
 // import LeafletMaps from '../pages/Maps/LeafletMaps/LeafletMaps';
 import ReportVBN from '../pages/Maps/brand-name/vbn.component';
 import Report from '../pages/Maps/report/report.component';
+import ReportDetail from '../pages/Maps/report-detail/report-detail.component';
 import TotalReport from '../pages/Maps/totalreport/totalreport.component';
 import ReportCustomer from '../pages/CustomerReport/report-customer/report-customer.component';
 
@@ -405,6 +406,7 @@ const authProtectedRoutes = [
   { path: '/routing', component: RoutingList },
   { path: '/partner-detail', component: PartnerDetailList },
   { path: '/report', component: Report },
+  { path: '/report-detail', component: ReportDetail },
   { path: '/sip-detail', component: SipDetail },
   { path: '/contact', component: ContactList },
   { path: '/service-config', component: ServiceConfigList },
