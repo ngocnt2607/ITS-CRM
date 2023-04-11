@@ -144,6 +144,7 @@ import ReportDetail from '../pages/Maps/report-detail/report-detail.component';
 import TotalReport from '../pages/Maps/totalreport/totalreport.component';
 import ReportCustomer from '../pages/CustomerReport/report-customer/report-customer.component';
 import InformCdrList from '../pages/Maps/inform-cdr/inform-cdr.component';
+import InformPDF from '../pages/Maps/inform-pdf/inform-pdf.component';
 //Homepage
 import HomePage from '../pages/HomePage/home-page/home.component';
 
@@ -530,6 +531,7 @@ const publicRoutes = [
   { path: '/pages-maintenance', component: Maintenance },
   { path: '/pages-coming-soon', component: ComingSoon },
   { path: '/landing', component: Index },
+  { path: '/inform-pdf', component: InformPDF },
 ];
 
 export { authProtectedRoutes, publicRoutes };

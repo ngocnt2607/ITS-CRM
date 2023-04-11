@@ -18,6 +18,7 @@ import LoadingComponent from '../../../Components/Common/loading.component';
 import SearchComponent from '../../../Components/Common/search.component';
 import { Message } from '../../../shared/const/message.const';
 import AddInformCdrComponent from './components/add-informcdr.component';
+import { useHistory } from 'react-router-dom';
 
 const InformCdrList = () => {
   const [loading, setLoading] = useState(false);
@@ -30,13 +31,10 @@ const InformCdrList = () => {
     viewMode: false,
     updateRecord: null,
   });
+  const history = useHistory();
 
-  const open = (updateRecord, viewMode = false) => {
-    setOpenModal({
-      viewMode,
-      updateRecord,
-      isOpen: true,
-    });
+  const openPdf = (record) => {
+    window.open(`${window.location.origin}/inform-pdf`, '_blank');
   };
 
   const close = () => {
@@ -111,14 +109,14 @@ const InformCdrList = () => {
           <Button
             color='info'
             size='small'
-            onClick={() => open(cellValues.row, true)}
+            onClick={() => openPdf(cellValues.row, true)}
           >
             Xem
           </Button>
           <Button
             color='success'
             size='small'
-            onClick={() => open(cellValues.row)}
+            onClick={() => openPdf(cellValues.row)}
             style={{ marginLeft: 8 }}
           >
             Sửa
@@ -148,12 +146,17 @@ const InformCdrList = () => {
       <LoadingComponent open={loading} />
       <div className='page-content'>
         <Container fluid>
-          <BreadCrumb title='Danh sách thông báo cước' pageTitle='Quản lý thông báo cước' />
+          <BreadCrumb
+            title='Danh sách thông báo cước'
+            pageTitle='Quản lý thông báo cước'
+          />
           <Row>
             <Col lg={12}>
               <Card>
                 <CardHeader>
-                  <h4 className='card-title mb-0 flex-grow-1'>Danh sách Thông báo</h4>
+                  <h4 className='card-title mb-0 flex-grow-1'>
+                    Danh sách Thông báo
+                  </h4>
                 </CardHeader>
 
                 <CardBody>
@@ -164,7 +167,7 @@ const InformCdrList = () => {
                           <Button
                             color='success'
                             className='add-btn'
-                            onClick={() => open(false)}
+                            onClick={() => openPdf(false)}
                             id='create-btn'
                           >
                             <i className='ri-add-line align-bottom me-1'></i>{' '}
@@ -190,12 +193,12 @@ const InformCdrList = () => {
       </div>
 
       <Modal
-         isOpen={openDelete}
-         toggle={() => handleOpenDelete(false)}
-         id='firstmodal'
-         modalClassName='flip'
-         centered
-      >         
+        isOpen={openDelete}
+        toggle={() => handleOpenDelete(false)}
+        id='firstmodal'
+        modalClassName='flip'
+        centered
+      >
         <ModalHeader>
           Xóa bản ghi
           <Button
