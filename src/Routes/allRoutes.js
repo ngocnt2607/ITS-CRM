@@ -143,7 +143,7 @@ import Report from '../pages/Maps/report/report.component';
 import ReportDetail from '../pages/Maps/report-detail/report-detail.component';
 import TotalReport from '../pages/Maps/totalreport/totalreport.component';
 import ReportCustomer from '../pages/CustomerReport/report-customer/report-customer.component';
-
+import InformCdrList from '../pages/Maps/inform-cdr/inform-cdr.component';
 //Homepage
 import HomePage from '../pages/HomePage/home-page/home.component';
 
@@ -427,6 +427,7 @@ const authProtectedRoutes = [
   { path: '/report', component: Report },
   { path: '/totalreport', component: TotalReport },
   { path: '/report-customer', component: ReportCustomer },
+  { path: '/inform-cdr', component: InformCdrList },
 
   //NumberManagement
   { path: '/vendor', component: VendorList },

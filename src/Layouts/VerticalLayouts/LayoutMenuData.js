@@ -153,6 +153,12 @@ const Navdata = () => {
           link: '/totalreport',
           parentId: 'report',
         },
+        {
+          id: 'inform-cdr',
+          label: 'Thông báo cước',
+          link: '/inform-cdr',
+          parentId: 'report',
+        },
       ],
     },
 

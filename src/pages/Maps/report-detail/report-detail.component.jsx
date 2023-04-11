@@ -20,9 +20,8 @@ import DataGridComponent from '../../../Components/Common/data-grid/data-grid.co
 import LoadingComponent from '../../../Components/Common/loading.component';
 import SearchComponent from '../../../Components/Common/search.component';
 import { generateOption, getListOption } from '../../../helpers/array.helper';
-import { reportWidgets } from '../../../shared/const/widget.const';
 import './report-detail.style.scss';
-import ShowHideColumnComponent from '../../../Components/Common/show-hide-column.component';
+import ShowHideColumn1Component from '../../../Components/Common/show-hide-column-report-detail.component';
 import { formatNumberComparator } from '../../../helpers/sort-table.helper';
 
 const ReportDetail = () => {
@@ -286,7 +285,7 @@ const ReportDetail = () => {
       <LoadingComponent open={loading} />
       <div className='page-content'>
         <Container fluid>
-          <BreadCrumb title='Báo cáo doanh thu' pageTitle='Báo cáo' />
+          <BreadCrumb title='Chi tiết cước' pageTitle='Báo cáo' />
 
           <Formik
             enableReinitialize
@@ -318,17 +317,21 @@ const ReportDetail = () => {
                     <i className='ri-search-line label-icon align-middle fs-16 me-2'></i>
                     Tìm kiếm
                   </Button>
-                </Col>
-
-                <Col lg={6}>
                   <Button
                     color='success'
-                    className='add-btn'
+                    className='download'
                     onClick={handleDownload}
                   >
                     Tải về
                   </Button>
                 </Col>
+
+                <Col className='col-sm d-flex gap-2 justify-content-end'>
+                    <ShowHideColumn1Component
+                      columns={columnConfig}
+                      setColumns={setColumnConfig}
+                    />
+                  </Col>
               </Row>
             </Form>
           </Formik>
@@ -337,18 +340,12 @@ const ReportDetail = () => {
             <Col lg={12}>
               <Card>
                 <CardHeader>
-                  {/* <h3 className='card-title mb-0 flex-grow-1'>
-                    Chi tiết Doanh thu
-                  </h3> */}
-                  <Col className='col-sm d-flex gap-2 justify-content-end'>
-                    <h2 className='card-title mb-0 flex-grow-1'>
-                      Chi tiết CDR
-                    </h2>
-                    <ShowHideColumnComponent
+                  {/* <Col className='col-sm d-flex gap-2 justify-content-end'>
+                    <ShowHideColumn1Component
                       columns={columnConfig}
                       setColumns={setColumnConfig}
                     />
-                  </Col>
+                  </Col> */}
                 </CardHeader>
 
                 <CardBody>
