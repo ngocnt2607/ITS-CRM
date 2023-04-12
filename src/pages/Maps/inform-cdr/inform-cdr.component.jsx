@@ -18,7 +18,6 @@ import LoadingComponent from '../../../Components/Common/loading.component';
 import SearchComponent from '../../../Components/Common/search.component';
 import { Message } from '../../../shared/const/message.const';
 import AddInformCdrComponent from './components/add-informcdr.component';
-import { useHistory } from 'react-router-dom';
 
 const InformCdrList = () => {
   const [loading, setLoading] = useState(false);
@@ -31,10 +30,17 @@ const InformCdrList = () => {
     viewMode: false,
     updateRecord: null,
   });
-  const history = useHistory();
 
   const openPdf = (record) => {
-    window.open(`${window.location.origin}/inform-pdf`, '_blank');
+    const stringParams = new URLSearchParams({
+      nickname: record.partner_name,
+      month: record.created_time,
+    })?.toString();
+    console.log(record);
+    window.open(
+      `${window.location.origin}/inform-pdf?${stringParams}`,
+      '_blank'
+    );
   };
 
   const close = () => {
