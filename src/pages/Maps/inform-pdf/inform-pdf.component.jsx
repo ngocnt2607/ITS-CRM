@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
     height: 80,
     margin: '0 auto',
   },
-  header: {
-    marginTop: 10,
+  company: {
+    flex: 1,
   },
   text: {
     fontSize: 12,
@@ -143,13 +143,24 @@ const InformPDF = () => {
 
           <Text style={styles.text}>No: {data?.[0]?.inform_id}</Text>
 
-          <View style={styles.header}>
-            <Text style={styles.title}>LEEON TECHNOLOGY</Text>
-            <Text style={styles.text}>
-              Address: Tầng 6, tòa nhà NewSkyline, Văn Quán, Hà Đông
-            </Text>
-            <Text style={styles.text}>Hotline: 1900996655</Text>
-            <Text style={styles.text}>Email: contact@leeon.vn</Text>
+          <View style={{ display: 'flex', flexDirection: 'row' }}>
+            <View style={styles.company}>
+              <Text style={styles.title}>LEEON TECHNOLOGY</Text>
+              <Text style={styles.text}>
+                Address: Tầng 6, tòa nhà NewSkyline, Văn Quán, Hà Đông
+              </Text>
+              <Text style={styles.text}>Hotline: 1900996655</Text>
+              <Text style={styles.text}>Email: contact@leeon.vn</Text>
+            </View>
+
+            <View style={[styles.company, { textAlign: 'right' }]}>
+              <Text style={styles.title}>{dataPartner[0]?.company}</Text>
+              <Text style={styles.text}>
+                Address: {dataPartner[0]?.address}
+              </Text>
+              <Text style={styles.text}>Hotline: {dataPartner[0]?.phone}</Text>
+              <Text style={styles.text}>Email: {dataPartner[0]?.email}</Text>
+            </View>
           </View>
 
           <View style={styles.table}>
