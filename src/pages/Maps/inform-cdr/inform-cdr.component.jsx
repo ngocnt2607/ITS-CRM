@@ -43,6 +43,14 @@ const InformCdrList = () => {
     );
   };
 
+  const open = (updateRecord, viewMode = false) => {
+    setOpenModal({
+      viewMode,
+      updateRecord,
+      isOpen: true,
+    });
+  };
+
   const close = () => {
     setOpenModal({
       updateRecord: null,
@@ -88,32 +96,32 @@ const InformCdrList = () => {
     {
       field: 'created_time',
       headerName: 'Thời gian tạo',
-      width: 250,
+      width: 320,
     },
     {
-      field: 'partner_name',
+      field: 'nickname',
       headerName: 'Tên khách hàng',
-      width: 250,
+      width: 320,
     },
     {
       field: 'partner_code',
       headerName: 'Mã khách hàng',
-      width: 250,
+      width: 320,
     },
     {
       field: 'STATUS',
       headerName: 'Trạng thái',
-      width: 250,
+      width: 320,
     },
     {
       field: 'action',
       headerName: 'Thao tác',
-      width: 250,
+      width: 300,
       sortable: false,
       renderCell: (cellValues) => (
         <>
           <Button
-            color='info'
+            color='primary'
             size='small'
             onClick={() => openPdf(cellValues.row, true)}
           >
@@ -122,7 +130,7 @@ const InformCdrList = () => {
           <Button
             color='success'
             size='small'
-            onClick={() => openPdf(cellValues.row)}
+            onClick={() => open(cellValues.row)}
             style={{ marginLeft: 8 }}
           >
             Sửa
@@ -161,7 +169,7 @@ const InformCdrList = () => {
               <Card>
                 <CardHeader>
                   <h4 className='card-title mb-0 flex-grow-1'>
-                    Danh sách Thông báo
+                    Danh sách Thông báo Cước
                   </h4>
                 </CardHeader>
 
@@ -173,7 +181,7 @@ const InformCdrList = () => {
                           <Button
                             color='success'
                             className='add-btn'
-                            onClick={() => openPdf(false)}
+                            onClick={() => open(false)}
                             id='create-btn'
                           >
                             <i className='ri-add-line align-bottom me-1'></i>{' '}

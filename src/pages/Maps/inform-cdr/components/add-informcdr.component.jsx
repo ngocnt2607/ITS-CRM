@@ -42,8 +42,8 @@ function AddInformCdr({
     })
   ).current;
   const TYPE_OPTION = useRef([
-    { label: 'Pending', value: 'Pending' },
-    { label: 'Xác nhận', value: 'Xác nhận' },
+    { label: 'Chờ gửi', value: 'Chờ gửi' },
+    { label: 'Đã gửi', value: 'Đã gửi' },
     { label: 'Hủy', value: 'Hủy' },
   ]).current;
   useEffect(() => {
@@ -51,12 +51,12 @@ function AddInformCdr({
       const {
         nickname,
         month,
-        status
+        STATUS
       } = updateRecord;
       setInitialValues({
         nickname: generateOption(nickname, nickname),
         month,
-        recordStatus: generateOption(status, status),
+        recordStatus: generateOption(STATUS, STATUS),
       });
       validationSchema.fields.recordStatus = Yup.object()
         .nullable()
@@ -73,14 +73,14 @@ function AddInformCdr({
         await InformCdrAPI.updateInformCdr({
           ...values,
           nickname: values.nickname?.value,
-          status: values.recordStatus?.value || '',
+          STATUS: values.recordStatus?.value || '',
           id: updateRecord.id,
         });
       } else {
         await InformCdrAPI.createNewInformCdr({
           ...values,
           nickname: values.nickname?.value,
-          status: values.recordStatus?.value,
+          STATUS: values.recordStatus?.value,
         });
       }
       addToast({
@@ -162,7 +162,7 @@ function AddInformCdr({
               <Row>
                 <div className='mb-3'>
                   <CustomSelectComponent
-                    name='vendor_name'
+                    name='nickname'
                     options={listData.nicknames}
                     label='Khách hàng'
                     placeholder='Vui lòng chọn khách hàng'
@@ -178,6 +178,16 @@ function AddInformCdr({
                 </div>
                 <Label className='form-label'>Ví dụ xuất tháng 3 thì nhập: 202303</Label>
 
+                {updateRecord && (
+                <div className='mb-3'>
+                  <CustomSelectComponent
+                    name='recordStatus'
+                    options={TYPE_OPTION}
+                    label='Trạng thái'
+                    placeholder='Vui lòng chọn khách hàng'
+                  />
+                </div>
+                )}
                 {!isViewMode && (
                   <div className='hstack gap-2 justify-content-end mt-3'>
                     <Button color='light' onClick={handleClose}>

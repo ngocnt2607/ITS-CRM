@@ -9,7 +9,7 @@ import {
   Font,
   Image,
 } from '@react-pdf/renderer';
-import logo from '../../../assets/images/leeon_logo-04.png';
+import logo from '../../../assets/images/leeon_logo-01.png';
 import { InformCdrAPI } from '../../../api/inform-cdr.api';
 import { toast } from 'react-toastify';
 
@@ -114,11 +114,11 @@ const InformPDF = () => {
         nickname,
         splitMonth?.join('')
       );
-      const sum = result?.data.reduce(
-        (accumulator, currentValue) => accumulator + currentValue.revenue,
-        0
-      );
-      setTotal(sum);
+      // const sum = result?.data.reduce(
+      //   (accumulator, currentValue) => accumulator + currentValue.revenue,
+      //   0
+      // );
+      setTotal(result?.data_total || []);
       setData(result?.data || []);
       setDataPartner(result?.data_partner || []);
     } catch (error) {
@@ -228,7 +228,7 @@ const InformPDF = () => {
                 fontFamily: 'Open Sans',
               }}
             >
-              {total}
+              {total[0]?.total_revenue}
             </Text>
           </View>
 
