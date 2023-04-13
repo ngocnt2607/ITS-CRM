@@ -5,11 +5,10 @@ export class InformCdrAPI {
     return httpService.get('/list_invoice', {});
   }
 
-  static getInvoiceDetail(nickname, month) {
-    return httpService.post('/invoice_detail', {
+  static getInvoiceDetail(inform_id) {
+    return httpService.post('/invoice_detail_bk', {
       body: {
-        nickname,
-        month,
+        inform_id
       },
     });
   }

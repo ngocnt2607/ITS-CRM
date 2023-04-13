@@ -33,8 +33,7 @@ const InformCdrList = () => {
 
   const openPdf = (record) => {
     const stringParams = new URLSearchParams({
-      nickname: record.partner_name,
-      month: record.created_time,
+      inform_id: record.inform_id,
     })?.toString();
     console.log(record);
     window.open(

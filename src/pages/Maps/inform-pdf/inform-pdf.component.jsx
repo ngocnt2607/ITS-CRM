@@ -100,19 +100,17 @@ Font.register({
 // Create Document Component
 const InformPDF = () => {
   const params = new URL(document.location).searchParams;
-  const nickname = params.get('nickname');
-  const month = params.get('month');
+  const inform_id = params.get('inform_id');
   const [data, setData] = useState([]);
   const [dataPartner, setDataPartner] = useState([]);
   const [total, setTotal] = useState(0);
 
   const handleGetData = useCallback(async () => {
     try {
-      const splitMonth = month?.split('-');
-      splitMonth.pop();
+      // const splitMonth = month?.split('-');
+      // splitMonth.pop();
       const result = await InformCdrAPI.getInvoiceDetail(
-        nickname,
-        splitMonth?.join('')
+        inform_id
       );
       // const sum = result?.data.reduce(
       //   (accumulator, currentValue) => accumulator + currentValue.revenue,
@@ -128,10 +126,10 @@ const InformPDF = () => {
   }, []);
 
   useEffect(() => {
-    if (nickname && month) {
+    if (inform_id) {
       handleGetData();
     }
-  }, [handleGetData, nickname, month]);
+  }, [handleGetData, inform_id]);
 
   return (
     <PDFViewer style={{ width: '100%', height: '99.4vh' }}>
