@@ -83,15 +83,23 @@ export class HttpService {
       (res) => {
         return res;
       },
-      (err) => {
+      async (err) => {
         const { status, data } = err.response;
         if (status === 401 && !window.location.pathname.includes('login')) {
           addToast({ message: Message.LOGIN_AGAIN, type: 'error' });
           store.dispatch(logoutUser());
           window.location.href = '/login';
         } else {
+          let response = null;
+          if (err.response.config.responseType === 'blob') {
+            response = await err.response?.data?.text();
+            response = JSON.parse(response);
+          }
           addToast({
-            message: err.response?.data?.NOTOK || Message.COMMON_ERROR,
+            message:
+              response?.NOTOK ||
+              err.response?.data?.NOTOK ||
+              Message.COMMON_ERROR,
             type: 'error',
           });
         }

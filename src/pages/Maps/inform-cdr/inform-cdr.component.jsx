@@ -95,28 +95,33 @@ const InformCdrList = () => {
     {
       field: 'created_time',
       headerName: 'Thời gian tạo',
-      width: 320,
+      flex: 1,
+      minWidth: 150,
     },
     {
       field: 'nickname',
       headerName: 'Tên khách hàng',
-      width: 320,
+      flex: 1,
+      minWidth: 150,
     },
     {
       field: 'partner_code',
       headerName: 'Mã khách hàng',
-      width: 320,
+      flex: 1,
+      minWidth: 150,
     },
     {
       field: 'STATUS',
       headerName: 'Trạng thái',
-      width: 320,
+      flex: 1,
+      minWidth: 130,
     },
     {
       field: 'action',
       headerName: 'Thao tác',
-      width: 300,
       sortable: false,
+      flex: 1,
+      minWidth: 200,
       renderCell: (cellValues) => (
         <>
           <Button
