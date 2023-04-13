@@ -17,6 +17,8 @@ const AuthProtected = (props) => {
         return PATH_BY_ROLE.CS.includes(location.pathname);
       case UserRole.SALE_ADMIN_SMS:
         return PATH_BY_ROLE.SALE_ADMIN_SMS.includes(location.pathname);
+        case UserRole.ITS_REPORT:
+          return PATH_BY_ROLE.ITS_REPORT.includes(location.pathname);
       case UserRole.KETOAN:
         return PATH_BY_ROLE.KETOAN.includes(location.pathname);
       case UserRole.SALEADMIN:

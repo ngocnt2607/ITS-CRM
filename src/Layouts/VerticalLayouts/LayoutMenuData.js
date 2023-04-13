@@ -351,6 +351,9 @@ const Navdata = () => {
       case UserRole.SALE:
         filterByRole(cloneMenuItem, PATH_BY_ROLE.SALE);
         break;
+      case UserRole.ITS_REPORT:
+        filterByRole(cloneMenuItem, PATH_BY_ROLE.ITS_REPORT);
+        break;
       case UserRole.NOC:
         filterByRole(cloneMenuItem, PATH_BY_ROLE.NOC);
         break;

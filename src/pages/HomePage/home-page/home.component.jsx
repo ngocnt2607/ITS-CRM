@@ -164,7 +164,7 @@ const HomePage = () => {
             userProfile.group === UserRole.CUSTOMER ||
             userProfile.group === UserRole.ADMIN_USER ||
             userProfile.group === UserRole.SALE ||
-            userProfile.group === UserRole.SALEADMIN) && (
+            userProfile.group === UserRole.SALEADMIN || userProfile.group === UserRole.ITS_REPORT) && (
             <Card>
               <CardHeader>
                 <h4 className='card-title mb-0'>Doanh thu ngày hiện tại</h4>
@@ -181,7 +181,7 @@ const HomePage = () => {
                 userProfile.group === UserRole.CUSTOMER ||
                 userProfile.group === UserRole.ADMIN_USER ||
                 userProfile.group === UserRole.SALE ||
-                userProfile.group === UserRole.SALEADMIN) && (
+                userProfile.group === UserRole.SALEADMIN || userProfile.group === UserRole.ITS_REPORT) && (
                 <Card>
                   <CardHeader>
                     <h4 className='card-title mb-0'>
@@ -207,7 +207,7 @@ const HomePage = () => {
                 userProfile.group === UserRole.CUSTOMER ||
                 userProfile.group === UserRole.ADMIN_USER ||
                 userProfile.group === UserRole.SALE ||
-                userProfile.group === UserRole.SALEADMIN) && (
+                userProfile.group === UserRole.SALEADMIN || userProfile.group === UserRole.ITS_REPORT) && (
                 <Card>
                   <CardHeader>
                     <h4 className='card-title mb-0'>
