@@ -8,6 +8,7 @@ export const UserRole = {
   KETOAN: 'KETOAN',
   SALEADMIN: 'SALEADMIN',
   SALE_ADMIN_SMS: 'SALE_ADMIN_SMS',
+  ITS_REPORT: 'ITS_REPORT',
 };
 
 export const PATH_BY_ROLE = {
@@ -28,6 +29,7 @@ export const PATH_BY_ROLE = {
     '/sms-vendor',
     '/report-customer'
   ],
+  ITS_REPORT: ['/home','/report-detail','/totalreport','/change-password','/report-customer'],
   KETOAN: ['/home','/report','/totalreport','/change-password','/contract-management'],
   SALEADMIN: ['/home','/change-password','/contract-management','/partner-management','/brand-management','/contact','report','/totalreport'],
   SALE: ['/home','/report','/contract-management','/change-password','/partner-management','/brand-management','/contact','report','/totalreport','/ticket-its'],
@@ -56,15 +58,14 @@ export const PATH_BY_ROLE = {
     '/report',
     '/totalreport',
     '/contract-management',
+    '/ccu-total',
     '/home',
     '/change-password',
-    '/sms-brand',
-    '/sms-partner',
-    '/sms-vendor',
     '/report-customer',
     '/partner-management',
     '/contact',
-    '/sms-statistic'
+    '/report-detail',
+    '/inform-cdr'
   ],
   SALE_ADMIN_SMS: [
     '/home',
