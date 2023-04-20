@@ -85,36 +85,43 @@ const UserList  = () => {
       field: 'username',
       headerName: 'Tên đăng nhập',
       flex: 0.75,
+      minWidth: 110,
     },
     {
       field: 'fullname',
       headerName: 'Họ và tên',
       flex: 0.75,
+      minWidth: 150,
     },
     {
       field: 'email',
       headerName: 'Email',
       flex: 0.75,
+      minWidth: 120,
     },
     {
       field: 'phonenumber',
       headerName: 'Số điện thoại',
-      flex: 0.75,
+      flex: 0.7,
+      minWidth: 120,
     },
     {
       field: 'group',
       headerName: 'Quyền',
       flex: 0.75,
+      minWidth: 190,
     },
     {
       field: 'status',
       headerName: 'Trạng thái',
-      flex: 0.75,
+      flex: 0.7,
+      minWidth: 120,
     },
     {
       field: 'action',
       headerName: 'Thao tác',
       flex: 0.71,
+      minWidth: 200,
       sortable: false,
       renderCell: (cellValues) => (
         <>

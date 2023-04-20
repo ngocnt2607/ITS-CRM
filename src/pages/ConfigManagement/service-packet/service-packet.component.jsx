@@ -84,32 +84,38 @@ const ServicePacketList = () => {
     {
       field: 'createdAt',
       headerName: 'Thời gian tạo',
-      width: 240,
+      flex: 0.7,
+      minWidth: 140,
     },
     {
       field: 'packetName',
       headerName: 'Tên gói',
-      width: 300,
+      flex: 0.8,
+      minWidth: 150,
     },
     {
       field: 'status',
       headerName: 'Trạng thái',
-      width: 220,
+      flex: 0.8,
+      minWidth: 150,
     },
     {
       field: 'blockType',
       headerName: 'Block tính cước',
-      width: 215,
+      flex: 0.8,
+      minWidth: 150,
     },
     {
       field: 'description',
       headerName: 'Mô tả',
-      width: 300,
+      flex: 0.5,
+      minWidth: 120,
     },
     {
       field: 'action',
       headerName: 'Thao tác',
-      width: 300,
+      flex: 1,
+      minWidth: 150,
       sortable: false,
       renderCell: (cellValues) => (
         <>
@@ -183,6 +189,7 @@ const ServicePacketList = () => {
                     </Row>
 
                     <DataGridComponent
+                      isBreakText
                       columns={COLUMN_CONFIG}
                       rows={searchData}
                     />

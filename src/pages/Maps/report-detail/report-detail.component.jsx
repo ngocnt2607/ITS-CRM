@@ -87,7 +87,7 @@ const ReportDetail = () => {
     {
       field: 'billTime',
       headerName: 'Thời gian tính tiền',
-      width: 150,
+      width: 200,
       sortComparator: formatNumberComparator,
     },
     {

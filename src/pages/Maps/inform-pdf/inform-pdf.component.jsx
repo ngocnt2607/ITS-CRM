@@ -11,6 +11,7 @@ import {
 } from '@react-pdf/renderer';
 import logo from '../../../assets/images/leeon_logo-01.png';
 import { InformCdrAPI } from '../../../api/inform-cdr.api';
+import LoadingComponent from '../../../Components/Common/loading.component';
 import { toast } from 'react-toastify';
 
 // Create styles
@@ -102,11 +103,13 @@ const InformPDF = () => {
   const params = new URL(document.location).searchParams;
   const inform_id = params.get('inform_id');
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [dataPartner, setDataPartner] = useState([]);
   const [total, setTotal] = useState(0);
 
   const handleGetData = useCallback(async () => {
     try {
+      setLoading(true);
       // const splitMonth = month?.split('-');
       // splitMonth.pop();
       const result = await InformCdrAPI.getInvoiceDetail(
@@ -119,7 +122,9 @@ const InformPDF = () => {
       setTotal(result?.data_total || []);
       setData(result?.data || []);
       setDataPartner(result?.data_partner || []);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       //Handle error
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -132,6 +137,8 @@ const InformPDF = () => {
   }, [handleGetData, inform_id]);
 
   return (
+    <React.Fragment>
+    <LoadingComponent open={loading} />
     <PDFViewer style={{ width: '100%', height: '99.4vh' }}>
       <Document>
         <Page size='A3' style={styles.body}>
@@ -254,6 +261,7 @@ const InformPDF = () => {
         </Page>
       </Document>
     </PDFViewer>
+    </React.Fragment>
   );
 };
 

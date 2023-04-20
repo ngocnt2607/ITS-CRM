@@ -29,7 +29,7 @@ export const PATH_BY_ROLE = {
     '/sms-vendor',
     '/report-customer'
   ],
-  ITS_REPORT: ['/home','/report-detail','/totalreport','/change-password','/report-customer'],
+  ITS_REPORT: ['/home','/report-detail','/totalreport','/change-password','/report-customer','/ticket-its'],
   KETOAN: ['/home','/report','/totalreport','/change-password','/contract-management'],
   SALEADMIN: ['/home','/change-password','/contract-management','/partner-management','/brand-management','/contact','report','/totalreport'],
   SALE: ['/home','/report','/contract-management','/change-password','/partner-management','/brand-management','/contact','report','/totalreport','/ticket-its'],
