@@ -37,16 +37,9 @@ export const PATH_BY_ROLE = {
   NOC: [
     '/home',
     '/partner-management',
-    '/account',
-    '/mapping',
-    '/routing',
-    '/partner-detail',
     '/change-password',
-    '/sms-brand',
-    '/sms-partner',
-    '/sms-vendor',
-    '/number-member',
-    '/report-customer',
+    '/service-config',
+    '/service-packet'
   ],
   ADMIN_USER: [
     '/vendor',
