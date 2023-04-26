@@ -82,35 +82,41 @@ const ContactList = () => {
 
   const COLUMN_CONFIG = useRef([
     {
-        field: 'partner',
-        headerName: 'Khách hàng',
-        flex: 0.75,
+      field: 'partner',
+      headerName: 'Khách hàng',
+      flex: 0.5,
+      minWidth: 130,
     },
     {
       field: 'name',
       headerName: 'Người liên hệ',
+      flex: 0.5,
+      minWidth: 130,
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
       flex: 0.75,
+      minWidth: 180,
     },
     {
-        field: 'email',
-        headerName: 'Email',
-        flex: 0.75,
-    },
-    {
-        field: 'position',
-        headerName: 'Vị trí',
-        flex: 0.75,
+      field: 'position',
+      headerName: 'Vị trí',
+      flex: 0.4,
+      minWidth: 90,
     },
     {
       field: 'phone',
       headerName: 'Số điện thoại',
-      flex: 0.75,
+      flex: 0.5,
+      minWidth: 120,
     },
     
     {
       field: 'action',
       headerName: 'Thao tác',
-      flex: 0.71,
+      flex: 0.75,
+      minWidth: 200,
       sortable: false,
       renderCell: (cellValues) => (
         <>

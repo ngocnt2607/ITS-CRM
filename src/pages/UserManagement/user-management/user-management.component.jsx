@@ -85,7 +85,7 @@ const UserList  = () => {
       field: 'username',
       headerName: 'Tên đăng nhập',
       flex: 0.75,
-      minWidth: 110,
+      minWidth: 140,
     },
     {
       field: 'fullname',
@@ -97,7 +97,7 @@ const UserList  = () => {
       field: 'email',
       headerName: 'Email',
       flex: 0.75,
-      minWidth: 120,
+      minWidth: 160,
     },
     {
       field: 'phonenumber',
