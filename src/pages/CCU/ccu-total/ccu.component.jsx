@@ -128,7 +128,7 @@ const CCUReport = () => {
                 </CardHeader>
                 <CardBody>
                   <StackAreaChartComponent
-                    dataColors='["--vz-muted", "--vz-primary", "--vz-success", "--vz-warning", "--vz-danger", "--vz-info", "--vz-dark"]'
+                    dataColors='["--vz-primary"]'
                     legendData={ccuReport.legendData}
                     xAxisData={ccuReport.xAxis}
                     data={ccuReport.data}

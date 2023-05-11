@@ -131,11 +131,11 @@ const ReportDetail = () => {
       headerName: 'Mã lỗi',
       width: 150,
     },
-    {
-      field: 'partnerTag',
-      headerName: 'Thẻ đối tác',
-      width: 120,
-    },
+    // {
+    //   field: 'partnerTag',
+    //   headerName: 'Thẻ đối tác',
+    //   width: 120,
+    // },
     {
       field: 'partner01',
       headerName: 'Đối tác cấp 1',

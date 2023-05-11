@@ -14,8 +14,7 @@ import {
 import * as Yup from 'yup';
 import CustomSelectComponent from '../../../Components/Common/custom-select/custom-select.component';
 import { ServiceConfigAPI } from '../../../api/service-config.api';
-import CalendarComponent from '../../../Components/Common/calendar/calendar.component';
-import { PartnerDetailAPI } from '../../../api/partnerdetail.api';
+import { PartnerAPI } from '../../../api/customer-management.api';
 import addToast from '../../../Components/Common/add-toast.component';
 import BreadCrumb from '../../../Components/Common/BreadCrumb';
 import DataGridComponent from '../../../Components/Common/data-grid/data-grid.component';
@@ -25,6 +24,7 @@ import { Message } from '../../../shared/const/message.const';
 import ShowHideColumnComponent from '../../../Components/Common/show-hide-column.component';
 import AddServiceConfigComponent from './components/add-serviceconfig.component';
 import { generateOption, getListOption } from '../../../helpers/array.helper';
+import { useLocation } from 'react-router-dom';
 
 const ServiceConfigList = () => {
   const [loading, setLoading] = useState(false);
@@ -33,28 +33,42 @@ const ServiceConfigList = () => {
   const [searchData, setSearchData] = useState([]);
   const [openDelete, setOpenDelete] = useState(false);
   const recordId = useRef(null);
+  const { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const initialNickname = searchParams.get('nickname');
   const [openModal, setOpenModal] = useState({
     isOpen: false,
     viewMode: false,
     updateRecord: null,
   });
-  // const [listData, setListData] = useState({
-  //   nicknames: [],
-  // });
-  // const validationSchema = useRef(
-  //   Yup.object({
-  //     date: Yup.object({
-  //       startDate: Yup.string().required('Please pick Date'),
-  //       endDate: Yup.string().required('Please pick Date'),
-  //     }),
-  //     nickname : Yup.object().nullable(),
-      
-  //   })
-  // ).current;
-  // const initialValues = useRef({
-  //   date: { startDate: '', endDate: '' },
-  //   customer_code: '',
-  // }).current;
+  const [listData, setListData] = useState({
+    nicknames: [],
+    callTypes: [],
+    isBrands: [],
+    packetNames: [],
+  });
+
+  const TYPE_OPTION = useRef([
+    { label: 'Sip Trunk', value: 'Sip Trunk' },
+    { label: 'Brand', value: 'Brand' },
+  ]).current;
+
+  const validationSchema = useRef(
+    Yup.object({
+      nickname: Yup.object().nullable(),
+      callType: Yup.object().nullable(),
+      isBrand: Yup.object().nullable(),
+      packetName: Yup.object().nullable(),
+    })
+  ).current;
+  const initialValues = useRef({
+    nickname: initialNickname
+      ? { label: initialNickname, value: initialNickname }
+      : '',
+    callType: '',
+    isBrand: '',
+    packetName: '',
+  }).current;
 
   const open = (updateRecord, viewMode = false) => {
     setOpenModal({
@@ -92,7 +106,9 @@ const ServiceConfigList = () => {
   const getListServiceConfig = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await ServiceConfigAPI.getServiceConfigList();
+      const response = await (initialNickname
+        ? ServiceConfigAPI.findServiceConfigList(initialNickname)
+        : ServiceConfigAPI.getServiceConfigList());
       setData(response.data);
       setSearchData(response.data);
       setLoading(false);
@@ -105,6 +121,34 @@ const ServiceConfigList = () => {
     getListServiceConfig();
   }, [getListServiceConfig]);
 
+  const getListData = useCallback(async () => {
+    const listAPI = [
+      PartnerAPI.getListPartner,
+      ServiceConfigAPI.getServicePacketList,
+      ServiceConfigAPI.getServiceTypeList,
+    ];
+    try {
+      setLoading(true);
+      const response = await Promise.all(listAPI.map((api) => api()));
+      setListData((prev) => ({
+        ...prev,
+        nicknames: getListOption(response[0]?.data, 'nickname', 'nickname'),
+        packetNames: getListOption(
+          response[1]?.data,
+          'packetName',
+          'packetName'
+        ),
+        callTypes: getListOption(response[2]?.data, 'callType', 'callType'),
+      }));
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    getListData();
+  }, [getListData]);
 
   const [columnConfig, setColumnConfig] = useState([
     {
@@ -147,13 +191,13 @@ const ServiceConfigList = () => {
       field: 'endDuration',
       headerName: 'Phút thoại kết thúc',
       flex: 0.8,
-      minWidth: 180,   
+      minWidth: 180,
     },
     {
       field: 'isBrand',
       headerName: 'Loại dịch vụ',
       flex: 0.7,
-      minWidth: 120, 
+      minWidth: 120,
     },
     {
       field: 'action',
@@ -172,7 +216,7 @@ const ServiceConfigList = () => {
           </Button>
           <Button
             color='success'
-            size='small' 
+            size='small'
             onClick={() => open(cellValues.row)}
             style={{ marginLeft: 8 }}
           >
@@ -190,7 +234,7 @@ const ServiceConfigList = () => {
         </>
       ),
     },
-  ])
+  ]);
 
   const onSearch = (search) => {
     setSearchData(search);
@@ -215,23 +259,23 @@ const ServiceConfigList = () => {
   //   getListData();
   // }, [getListData]);
 
-  // const handleSubmit = async (values) => {
-  //   try {
-  //     setLoading(true);
-  //     const { date, nickname } = values;
-  //     const response = await ServiceConfigAPI.findServiceConfigList(
-  //       date.startDate,
-  //       date.endDate,
-  //       nickname?.value || '',
-  //     );
-  //     setData(response.data);
-  //     setSearchData(response.data);
-  //     setLoading(false);
-  //   } catch (error) {
-  //     setLoading(false);
-  //   }
-  // };
-
+  const handleSubmit = async (values) => {
+    try {
+      setLoading(true);
+      const { nickname, packetName, callType, isBrand } = values;
+      const response = await ServiceConfigAPI.findServiceConfigList(
+        nickname?.value || '',
+        packetName?.value || '',
+        callType?.value || '',
+        isBrand?.value || ''
+      );
+      setData(response.data);
+      setSearchData(response.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
   document.title = 'Service Config';
 
@@ -242,7 +286,7 @@ const ServiceConfigList = () => {
         <Container fluid>
           <BreadCrumb title='Service Config' pageTitle='Quản lý Config' />
 
-          {/* <Formik
+          <Formik
             enableReinitialize
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -251,19 +295,39 @@ const ServiceConfigList = () => {
           >
             <Form>
               <Row>
-                <Col lg={3}>
-                  <CalendarComponent name='date' placeholder='Chọn ngày' />
-                </Col>
-
-                <Col lg={3}>
-                  <CustomSelectComponent   
+                <Col lg={2}>
+                  <CustomSelectComponent
                     name='nickname'
                     options={listData.nicknames}
-                    placeholder='Vui lòng chọn đối tác'
+                    placeholder='Đối tác'
                   />
                 </Col>
 
-                <Col lg={3}>
+                <Col lg={2}>
+                  <CustomSelectComponent
+                    name='packetName'
+                    options={listData.packetNames}
+                    placeholder='Gói cước'
+                  />
+                </Col>
+
+                <Col lg={2}>
+                  <CustomSelectComponent
+                    name='callType'
+                    options={listData.callTypes}
+                    placeholder='Loại cuộc gọi'
+                  />
+                </Col>
+
+                <Col lg={2}>
+                  <CustomSelectComponent
+                    name='isBrand'
+                    options={TYPE_OPTION}
+                    placeholder='Loại dịch vụ'
+                  />
+                </Col>
+
+                <Col lg={2}>
                   <Button
                     color='primary'
                     className='mt-3 submit-button btn-label'
@@ -275,7 +339,7 @@ const ServiceConfigList = () => {
                 </Col>
               </Row>
             </Form>
-          </Formik> */}
+          </Formik>
           <Row>
             <Col lg={12}>
               <Card>
@@ -324,11 +388,11 @@ const ServiceConfigList = () => {
       </div>
 
       <Modal
-         isOpen={openDelete}
-         toggle={() => handleOpenDelete(false)}
-         id='firstmodal'
-         modalClassName='flip'
-         centered
+        isOpen={openDelete}
+        toggle={() => handleOpenDelete(false)}
+        id='firstmodal'
+        modalClassName='flip'
+        centered
       >
         <ModalHeader>
           Xóa bản ghi

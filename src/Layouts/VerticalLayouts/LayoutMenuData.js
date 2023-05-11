@@ -148,6 +148,12 @@ const Navdata = () => {
           parentId: 'report',
         },
         {
+          id: 'reprot-calltype',
+          label: 'Báo cáo theo hướng',
+          link: '/report-calltype',
+          parentId: 'report',
+        },
+        {
           id: 'totalreport',
           label: 'Doanh thu tổng',
           link: '/totalreport',

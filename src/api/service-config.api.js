@@ -52,11 +52,12 @@ export class ServiceConfigAPI {
     });
   }
 
-  static findServiceConfigList(starttime, endtime, nickname) {
+  static findServiceConfigList(nickname, packetName, callType, isBrand) {
     const searchParams = new URLSearchParams({
-      starttime,
-      endtime,
       nickname,
+      packetName,
+      callType,
+      isBrand,
     }).toString();
     return httpService.get(`/find_service_config?${searchParams}`, {  
     });

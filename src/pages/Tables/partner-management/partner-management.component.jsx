@@ -10,8 +10,9 @@ import {
   ModalHeader,
   Row,
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { PartnerAPI } from '../../../api/customer-management.api';
+import { ServiceConfigAPI } from '../../../api/service-config.api';
 import addToast from '../../../Components/Common/add-toast.component';
 import BreadCrumb from '../../../Components/Common/BreadCrumb';
 import DataGridComponent from '../../../Components/Common/data-grid/data-grid.component';
@@ -95,57 +96,56 @@ const PartnerListAll = () => {
       flex: 0.65,
       minWidth: 100,
     },
-    { field: 'taxcode', 
-      headerName: 'Mã số thuế', 
+    { field: 'taxcode', headerName: 'Mã số thuế', flex: 0.75, minWidth: 110 },
+    {
+      field: 'partner_code',
+      headerName: 'Mã khách hàng',
       flex: 0.75,
       minWidth: 110,
     },
-    { field: 'partner_code', 
-      headerName: 'Mã khách hàng', 
-      flex: 0.75,
-      minWidth: 130,
-    },
-    { field: 'ip', 
-      headerName: 'IP khách hàng', 
-      flex: 0.75,
-      minWidth: 130,
-    },
-    { field: 'email', 
-      headerName: 'Email', 
+    { field: 'ip', headerName: 'IP khách hàng', flex: 0.75, minWidth: 110 },
+    {
+      field: 'email',
+      headerName: 'Email',
       flex: 0.75,
       minWidth: 110,
       hide: true,
     },
-    { field: 'nickname', 
-      headerName: 'Tên giao dịch', 
+    {
+      field: 'nickname',
+      headerName: 'Tên giao dịch',
       flex: 0.75,
-      minWidth: 130,
+      minWidth: 110,
     },
-    { field: 'a', 
-      headerName: 'Quản lý gói cước', 
+    {
+      field: 'a',
+      headerName: 'Quản lý gói cước',
       flex: 0.75,
       minWidth: 150,
       renderCell: (params) => (
-        <Link to ='/service-config'>
+        <Link to={`/service-config?nickname=${params.row.nickname}`}>
           {params.value}
         </Link>
       ),
     },
-    { field: 'phone', 
-      headerName: 'Điện thoại công ty', 
+    {
+      field: 'phone',
+      headerName: 'Điện thoại công ty',
       flex: 0.75,
       minWidth: 110,
       hide: true,
     },
-    { field: 'represent', 
-      headerName: 'Người đại diện', 
-      hide: true, 
+    {
+      field: 'represent',
+      headerName: 'Người đại diện',
+      hide: true,
       flex: 0.75,
       minWidth: 110,
     },
-    { field: 'website', 
-      headerName: 'Website', 
-      hide: true, 
+    {
+      field: 'website',
+      headerName: 'Website',
+      hide: true,
       flex: 0.75,
       minWidth: 110,
     },
@@ -156,21 +156,24 @@ const PartnerListAll = () => {
       flex: 0.75,
       minWidth: 110,
     },
-    { field: 'bank', 
+    {
+      field: 'bank',
       headerName: 'Ngân hàng',
-      hide: true,  
+      hide: true,
       flex: 0.75,
       minWidth: 110,
     },
-    { field: 'bankaccount', 
+    {
+      field: 'bankaccount',
       headerName: 'Tài khoản NH',
-      hide: true,  
+      hide: true,
       flex: 0.75,
       minWidth: 110,
     },
-    { field: 'bankbranch', 
+    {
+      field: 'bankbranch',
       headerName: 'Chi nhánh',
-      hide: true,  
+      hide: true,
       flex: 0.75,
       minWidth: 110,
     },
@@ -191,7 +194,7 @@ const PartnerListAll = () => {
           </Button>
           <Button
             color='success'
-            size='small' 
+            size='small'
             onClick={() => open(cellValues.row)}
             style={{ marginLeft: 8 }}
           >

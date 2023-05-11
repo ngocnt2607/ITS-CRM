@@ -9,6 +9,10 @@ export class ReportAPI {
     return httpService.get('/totalreport', {});
   }
 
+  static getReportCallType() {
+    return httpService.get('/report_calltype', {});
+  }
+
   static getReportDetail(offset) {
     return httpService.get(`/report_detail`, {
       queryParams: {
@@ -29,6 +33,11 @@ export class ReportAPI {
       body,
       responseType: 'blob',
     });
+  }
+
+  static getCallTypeCustomer(nickname) {
+    const searchParams = new URLSearchParams({ nickname }).toString();
+    return httpService.get(`/list_calltype?${searchParams}`, {});
   }
 
   static getVosIp(nickname) {
@@ -70,5 +79,15 @@ export class ReportAPI {
       telco,
     }).toString();
     return httpService.get(`/findreport_customer?${searchParams}`, {});
+  }
+
+  static findReportCallType(starttime, endtime, nickname, callType) {
+    const searchParams = new URLSearchParams({
+      starttime,
+      endtime,
+      nickname,
+      callType,
+    }).toString();
+    return httpService.get(`/find_report_calltype?${searchParams}`, {});
   }
 }
