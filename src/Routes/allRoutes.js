@@ -141,6 +141,7 @@ import LineAwesomeIcons from '../pages/Icons/LineAwesomeIcons/LineAwesomeIcons';
 import ReportVBN from '../pages/Maps/brand-name/vbn.component';
 import Report from '../pages/Maps/report/report.component';
 import ReportCallType from '../pages/Maps/report-calltype/report-calltype.component';
+import ReportTelcoCallType from '../pages/Maps/report-telco-calltype/report-telco-calltype.component';
 import ReportDetail from '../pages/Maps/report-detail/report-detail.component';
 import TotalReport from '../pages/Maps/totalreport/totalreport.component';
 import ReportCustomer from '../pages/CustomerReport/report-customer/report-customer.component';
@@ -428,6 +429,7 @@ const authProtectedRoutes = [
   { path: '/brand-name', component: ReportVBN },
   { path: '/report', component: Report },
   { path: '/report-calltype', component: ReportCallType },
+  { path: '/report-telco-calltype', component: ReportTelcoCallType },
   { path: '/totalreport', component: TotalReport },
   { path: '/report-customer', component: ReportCustomer },
   { path: '/inform-cdr', component: InformCdrList },

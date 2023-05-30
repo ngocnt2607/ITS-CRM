@@ -154,6 +154,12 @@ const Navdata = () => {
           parentId: 'report',
         },
         {
+          id: 'reprot-telco-calltype',
+          label: 'Báo cáo hướng nhà mạng',
+          link: '/report-telco-calltype',
+          parentId: 'report',
+        },
+        {
           id: 'totalreport',
           label: 'Doanh thu tổng',
           link: '/totalreport',

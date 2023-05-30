@@ -5,6 +5,10 @@ export class ReportAPI {
     return httpService.get('/report', {});
   }
 
+  static getReportTelcoCallTypeList() {
+    return httpService.get('/report_theo_huong', {});
+  }
+
   static getTotalReport() {
     return httpService.get('/totalreport', {});
   }
@@ -38,6 +42,11 @@ export class ReportAPI {
   static getCallTypeCustomer(nickname) {
     const searchParams = new URLSearchParams({ nickname }).toString();
     return httpService.get(`/list_calltype?${searchParams}`, {});
+  }
+
+  static getCallTypeTelco(telco_group) {
+    const searchParams = new URLSearchParams({ telco_group }).toString();
+    return httpService.get(`/telco_group_to_callType?${searchParams}`, {});
   }
 
   static getVosIp(nickname) {
@@ -89,5 +98,15 @@ export class ReportAPI {
       callType,
     }).toString();
     return httpService.get(`/find_report_calltype?${searchParams}`, {});
+  }
+
+  static findReportCallTypeTelco(starttime, endtime, telco_group, callType) {
+    const searchParams = new URLSearchParams({
+      starttime,
+      endtime,
+      telco_group,
+      callType,
+    }).toString();
+    return httpService.get(`/find_report_theo_huong?${searchParams}`, {});
   }
 }
