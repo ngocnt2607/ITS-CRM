@@ -29,11 +29,11 @@ export const PATH_BY_ROLE = {
     '/sms-vendor',
     '/report-customer'
   ],
-  ITS_REPORT: ['/home','/report-detail','/totalreport','/change-password','/report-customer','/ticket-its','report-calltype'],
-  KETOAN: ['/home','/report','/totalreport','/change-password','/contract-management'],
-  SALEADMIN: ['/home','/change-password','/contract-management','/partner-management','/brand-management','/contact','report','/totalreport'],
-  SALE: ['/home','/report','/contract-management','/change-password','/partner-management','/brand-management','/contact','report','/totalreport','/ticket-its'],
-  CUSTOMER: ['/home','/report-customer','/change-password'],
+  ITS_REPORT: ['/home', '/report-detail', '/totalreport', '/change-password', '/report-customer', '/ticket-its', 'report-calltype', '/report-telco-calltype', '/user-management', '/report-detail-customer'],
+  KETOAN: ['/home', '/report', '/totalreport', '/change-password', '/contract-management'],
+  SALEADMIN: ['/home', '/change-password', '/contract-management', '/partner-management', '/brand-management', '/contact', 'report', '/totalreport'],
+  SALE: ['/home', '/report', '/contract-management', '/change-password', '/partner-management', '/brand-management', '/contact', 'report', '/totalreport', '/ticket-its'],
+  CUSTOMER: ['/home', '/report-customer', '/change-password', '/report-detail-customer'],
   NOC: [
     '/home',
     '/partner-management',

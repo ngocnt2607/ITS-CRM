@@ -143,6 +143,7 @@ import Report from '../pages/Maps/report/report.component';
 import ReportCallType from '../pages/Maps/report-calltype/report-calltype.component';
 import ReportTelcoCallType from '../pages/Maps/report-telco-calltype/report-telco-calltype.component';
 import ReportDetail from '../pages/Maps/report-detail/report-detail.component';
+import ReportDetailCustomer from '../pages/CustomerReport/report-detail-customer/report-detail-customer.component';
 import TotalReport from '../pages/Maps/totalreport/totalreport.component';
 import ReportCustomer from '../pages/CustomerReport/report-customer/report-customer.component';
 import InformCdrList from '../pages/Maps/inform-cdr/inform-cdr.component';
@@ -410,6 +411,7 @@ const authProtectedRoutes = [
   { path: '/partner-detail', component: PartnerDetailList },
   { path: '/report', component: Report },
   { path: '/report-detail', component: ReportDetail },
+  { path: '/report-detail-customer', component: ReportDetailCustomer },
   { path: '/sip-detail', component: SipDetail },
   { path: '/contact', component: ContactList },
   { path: '/service-config', component: ServiceConfigList },

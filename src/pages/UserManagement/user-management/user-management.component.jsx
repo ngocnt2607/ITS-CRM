@@ -19,7 +19,7 @@ import SearchComponent from '../../../Components/Common/search.component';
 import { Message } from '../../../shared/const/message.const';
 import AddUserComponent from './components/add-user.component';
 
-const UserList  = () => {
+const UserList = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [searchData, setSearchData] = useState([]);
@@ -57,7 +57,7 @@ const UserList  = () => {
       setLoading(true);
       await UserListAPI.deleteUser(recordId.current);
       addToast({ message: Message.DELETE_SUCCESS, type: 'success' });
-      await getListUser ();
+      await getListUser();
       handleOpenDelete(false);
     } catch (error) {
       setLoading(false);
@@ -85,7 +85,7 @@ const UserList  = () => {
       field: 'username',
       headerName: 'Tên đăng nhập',
       flex: 0.75,
-      minWidth: 140,
+      minWidth: 110,
     },
     {
       field: 'fullname',
@@ -97,7 +97,7 @@ const UserList  = () => {
       field: 'email',
       headerName: 'Email',
       flex: 0.75,
-      minWidth: 160,
+      minWidth: 120,
     },
     {
       field: 'phonenumber',
@@ -250,11 +250,8 @@ const UserList  = () => {
         isOpen={openModal.isOpen}
         close={close}
         getList={getListUser}
-        getList1={getListUser}
         updateRecord={openModal.updateRecord}
-        updateRecord1={openModal.updateRecord}
         isViewMode={openModal.viewMode}
-        isViewMode1={openModal.viewMode}
       />
     </React.Fragment>
   );

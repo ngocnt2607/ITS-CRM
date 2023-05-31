@@ -192,6 +192,12 @@ const Navdata = () => {
           link: '/report-customer',
           parentId: 'customerreport',
         },
+        {
+          id: 'reprot-detail-customer',
+          label: 'Chi tiết cước',
+          link: '/report-detail-customer',
+          parentId: 'customerreport',
+        },
       ],
     },
     {
