@@ -50,9 +50,9 @@ const Sidebar = ({ layoutType }) => {
             <span className="logo-sm">
               <img src={logoSm} alt="" height="22" />
             </span>
-            <span className="logo-lg">
-              <img src={logoLight} alt="" height="170" />
-            </span>
+            <div className="logo-lg" style={{ marginTop: 10 }}>
+              <img src={logoLight} alt="" height="75" />
+            </div>
           </Link>
           <button
             onClick={addEventListenerOnSmHoverMenu}
