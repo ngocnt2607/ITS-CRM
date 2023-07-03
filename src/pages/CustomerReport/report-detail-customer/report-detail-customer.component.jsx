@@ -21,6 +21,8 @@ import SearchComponent from '../../../Components/Common/search.component';
 import { generateOption, getListOption } from '../../../helpers/array.helper';
 import ShowHideColumn1Component from '../../../Components/Common/show-hide-column-report-detail.component';
 import { formatNumberComparator } from '../../../helpers/sort-table.helper';
+import './report-detail-customer.style.scss';
+
 
 const ReportDetailCustomer = () => {
   const [page, setPage] = useState(1);

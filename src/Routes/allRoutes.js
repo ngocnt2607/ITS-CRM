@@ -145,6 +145,7 @@ import ReportTelcoCallType from '../pages/Maps/report-telco-calltype/report-telc
 import ReportDetail from '../pages/Maps/report-detail/report-detail.component';
 import ReportDetailCustomer from '../pages/CustomerReport/report-detail-customer/report-detail-customer.component';
 import TotalReport from '../pages/Maps/totalreport/totalreport.component';
+import ReportLimit from '../pages/Maps/report-limit/report-limit.component';
 import ReportCustomer from '../pages/CustomerReport/report-customer/report-customer.component';
 import InformCdrList from '../pages/Maps/inform-cdr/inform-cdr.component';
 import InformPDF from '../pages/Maps/inform-pdf/inform-pdf.component';
@@ -224,6 +225,7 @@ import VendorContactList from '../pages/VendorManagement/vendor-contact/vendor-c
 import VendorPackageList from '../pages/NumberManagement/vendor-package/vendor-package.component';
 import NumberOwnerList from '../pages/NumberManagement/number-owner/number-owner.component';
 import NumberMemberList from '../pages/NumberManagement/number-member/number-member.component';
+import NumberITS from '../pages/NumberManagement/number-telco-management/number-telco-management.component';
 
 //Quản lý SMS
 // import ReportSMSVendor from '../pages/SmsManagement/sms-vendor/sms-vendor.component';
@@ -412,6 +414,7 @@ const authProtectedRoutes = [
   { path: '/report', component: Report },
   { path: '/report-detail', component: ReportDetail },
   { path: '/report-detail-customer', component: ReportDetailCustomer },
+  { path: '/number-telco-management', component: NumberITS },
   { path: '/sip-detail', component: SipDetail },
   { path: '/contact', component: ContactList },
   { path: '/service-config', component: ServiceConfigList },
@@ -433,6 +436,7 @@ const authProtectedRoutes = [
   { path: '/report-calltype', component: ReportCallType },
   { path: '/report-telco-calltype', component: ReportTelcoCallType },
   { path: '/totalreport', component: TotalReport },
+  { path: '/report-limit', component: ReportLimit },
   { path: '/report-customer', component: ReportCustomer },
   { path: '/inform-cdr', component: InformCdrList },
 

@@ -17,6 +17,10 @@ export class ReportAPI {
     return httpService.get('/report_calltype', {});
   }
 
+  static getReportLimit() {
+    return httpService.get('/list_han_muc', {});
+  }
+
   static getReportDetail(offset) {
     return httpService.get(`/report_detail`, {
       queryParams: {
@@ -34,6 +38,13 @@ export class ReportAPI {
 
   static downloadReportDetail(body) {
     return httpService.post('/download_report_detail', {
+      body,
+      responseType: 'blob',
+    });
+  }
+
+  static downloadISDN(body) {
+    return httpService.post('/download_isdn_from_m4', {
       body,
       responseType: 'blob',
     });

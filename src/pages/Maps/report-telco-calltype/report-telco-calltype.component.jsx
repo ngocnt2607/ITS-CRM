@@ -67,32 +67,46 @@ const ReportTelcoCallType = () => {
       field: 'dateTime',
       headerName: 'Thời gian',
       flex: 0.5,
-      width: 100,
+      minWidth: 100,
     },
     {
       field: 'telco_group',
       headerName: 'Nhà mạng',
       flex: 0.5,
-      width: 160,
+      minWidth: 120,
     },
     {
       field: 'callType',
       headerName: 'Hướng cuộc gọi',
       flex: 1,
-      width: 200,
+      minWidth: 200,
     },
     {
       field: 'totalDuration',
       headerName: 'Tổng phút gọi',
       flex: 0.5,
-      width: 140,
+      minWidth: 140,
       sortComparator: formatNumberComparator,
     },
     {
       field: 'totalAmount',
-      headerName: 'Thành tiền',
+      headerName: 'Thành tiền chưa VAT',
       flex: 0.5,
-      width: 140,
+      minWidth: 180,
+      sortComparator: formatNumberComparator,
+    },
+    {
+      field: 'VAT',
+      headerName: 'VAT',
+      flex: 0.5,
+      minWidth: 140,
+      sortComparator: formatNumberComparator,
+    },
+    {
+      field: 'totalAmountVAT',
+      headerName: 'Thành tiền có VAT',
+      flex: 0.5,
+      minWidth: 160,
       sortComparator: formatNumberComparator,
     },
   ]).current;
@@ -105,6 +119,8 @@ const ReportTelcoCallType = () => {
           ...item,
           totalDuration: nf.format(item?.['totalDuration']),
           totalAmount: nf.format(item?.['totalAmount']),
+          totalAmountVAT: nf.format(item?.['totalAmountVAT']),
+          VAT: nf.format(item?.['VAT']),
         };
       }) || []
     );
@@ -270,10 +286,14 @@ const ReportTelcoCallType = () => {
                   </Col> */}
                 </CardHeader>
 
-                <DataGridComponent
-                  columns={COLUMN_CONFIG}
-                  rows={searchData}
-                />
+                <CardBody>
+                  <div id='table-gridjs'>
+                    <DataGridComponent
+                      columns={COLUMN_CONFIG}
+                      rows={searchData}
+                    />
+                  </div>
+                </CardBody>
               </Card>
             </Col>
           </Row>

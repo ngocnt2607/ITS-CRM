@@ -166,9 +166,21 @@ const Navdata = () => {
           parentId: 'report',
         },
         {
+          id: 'report-limit',
+          label: 'Báo cáo hạn mức',
+          link: '/report-limit',
+          parentId: 'report',
+        },
+        {
           id: 'inform-cdr',
           label: 'Thông báo cước',
           link: '/inform-cdr',
+          parentId: 'report',
+        },
+        {
+          id: 'number-telco-management',
+          label: 'Quản lý số khách hàng',
+          link: '/number-telco-management',
           parentId: 'report',
         },
       ],

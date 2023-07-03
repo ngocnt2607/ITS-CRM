@@ -22,7 +22,7 @@ import { ResetAPI } from '../../api/reset-password.api';
 
 // import images
 // import profile from "../../assets/images/bg.png";
-import logoLight from "../../assets/images/leeon_logo-04.png";
+import logoLight from "../../assets/images/logo-its.png";
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
 
 const ForgetPasswordPage = props => {
@@ -57,7 +57,7 @@ const ForgetPasswordPage = props => {
     forgetError: state.ForgetPassword.forgetError,
     forgetSuccessMsg: state.ForgetPassword.forgetSuccessMsg,
   }));
-  document.title = "Reset Password | Leeon Technology CRM";
+  document.title = "Reset Password | ITS CRM";
   return (
     <ParticlesAuth>
       <div className="auth-page-content">
@@ -68,10 +68,10 @@ const ForgetPasswordPage = props => {
               <div className="text-center mt-sm-5 mb-4 text-white-50">
                 <div>
                   <Link to="/" className="d-inline-block auth-logo">
-                    <img src={logoLight} alt="" height="100" />
+                    <img src={logoLight} alt="" height="170" />
                   </Link>
                 </div>
-                <p className="mt-3 fs-15 fw-medium">Leeon Technology CRM</p>
+                <p className="mt-3 fs-15 fw-medium"></p>
               </div>
             </Col>
           </Row>

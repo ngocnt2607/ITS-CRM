@@ -11,19 +11,17 @@ import {
 } from 'reactstrap';
 import * as Yup from 'yup';
 import { PartnerAPI } from '../../../api/customer-management.api';
+import { NumberMemberAPI } from '../../../api/number-member.api';
 import { ReportAPI } from '../../../api/report.api';
 import BreadCrumb from '../../../Components/Common/BreadCrumb';
-import CalendarComponent from '../../../Components/Common/calendar/calendar.component';
 import CustomSelectComponent from '../../../Components/Common/custom-select/custom-select.component';
 import DataGridComponent from '../../../Components/Common/data-grid/data-grid.component';
 import LoadingComponent from '../../../Components/Common/loading.component';
 import SearchComponent from '../../../Components/Common/search.component';
 import { generateOption, getListOption } from '../../../helpers/array.helper';
-import './report-calltype.style.scss';
-import ShowHideColumn1Component from '../../../Components/Common/show-hide-column-report-detail.component';
 import { formatNumberComparator } from '../../../helpers/sort-table.helper';
 
-const ReportCallType = () => {
+const NumberITS = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [searchData, setSearchData] = useState([]);
@@ -35,111 +33,33 @@ const ReportCallType = () => {
   });
   const validationSchema = useRef(
     Yup.object({
-      date: Yup.object({
-        startDate: Yup.string().required('Vui lòng chọn ngày bắt đầu'),
-        endDate: Yup.string().required('Vui lòng chọn ngày kết thúc'),
-      }),
-      nickname: Yup.object().nullable(),
-      callType: Yup.object().nullable(),
+      nickname: Yup.object().nullable().required('Vui lòng chọn đối tác'),
+      mapping: Yup.object().nullable().required('Vui lòng chọn hướng nhà mạng'),
     })
   ).current;
 
-  const [listCalltype, setListCalltype] = useState({
-    callTypes: [],
+  const [listMapping, setListMapping] = useState({
+    mappings: [],
   });
 
   const initialValues = useRef({
-    date: { startDate: '', endDate: '' },
     nickname: null,
-    callType: null,
+    mapping: null,
   }).current;
   const COLUMN_CONFIG = useRef([
     {
-      field: 'dateTime',
-      headerName: 'Thời gian',
-      flex: 0.5,
+      field: 'mapping',
+      headerName: 'Đối tác',
+      flex: 1,
       minWidth: 100,
     },
     {
-      field: 'nickname',
-      headerName: 'Tên khách hàng',
-      flex: 0.5,
-      minWidth: 160,
-    },
-    {
-      field: 'isBrand',
-      headerName: 'Dịch vụ',
-      flex: 0.5,
-      minWidth: 100,
-    },
-    {
-      field: 'callType',
-      headerName: 'Loại cuộc gọi',
-      flex: 0.75,
-      minWidth: 220,
-    },
-    {
-      field: 'totalDuration',
-      headerName: 'Tổng phút gọi',
-      flex: 0.5,
-      minWidth: 140,
-      sortComparator: formatNumberComparator,
-    },
-    {
-      field: 'totalAmount',
-      headerName: 'Thành tiền chưa VAT',
-      flex: 0.5,
-      minWidth: 180,
-      sortComparator: formatNumberComparator,
-    },
-    {
-      field: 'VAT',
-      headerName: 'VAT',
-      flex: 0.5,
-      minWidth: 140,
-      sortComparator: formatNumberComparator,
-    },
-    {
-      field: 'totalAmountVAT',
-      headerName: 'Thành tiền có VAT',
-      flex: 0.5,
-      minWidth: 160,
-      sortComparator: formatNumberComparator,
+      field: 'isdn',
+      headerName: 'Số điện thoại',
+      flex: 1,
+      minWidth: 300,
     },
   ]).current;
-
-  const convertData = (data) => {
-    return (
-      data?.map((item) => {
-        const nf = new Intl.NumberFormat('en-US');
-        return {
-          ...item,
-          totalDuration: nf.format(item?.['totalDuration']),
-          totalAmount: nf.format(item?.['totalAmount']),
-          totalAmountVAT: nf.format(item?.['totalAmountVAT']),
-          VAT: nf.format(item?.['VAT']),
-        };
-      }) || []
-    );
-  };
-
-  const getInitialData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await Promise.all([
-        ReportAPI.getReportCallType(),
-      ]);
-      const mapData = convertData(response[0]?.data);
-      setData(mapData);
-      setSearchData(mapData);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
-  }, []);
-  useEffect(() => {
-    getInitialData();
-  }, [getInitialData]);
 
   const getListData = useCallback(async () => {
     const listAPI = [PartnerAPI.getListPartner];
@@ -162,14 +82,14 @@ const ReportCallType = () => {
 
   useLayoutEffect(() => {
     const handleCallAPI = async () => {
-      const listAPI = [ReportAPI.getCallTypeCustomer];
+      const listAPI = [NumberMemberAPI.getMappingPartner];
       try {
         setLoading(true);
         const response = await Promise.all(
           listAPI.map((api) => api(selectedPartner))
         );
-        setListCalltype({
-          callTypes: getListOption(response[0]?.data, 'callType', 'callType'),
+        setListMapping({
+          mappings: getListOption(response[0]?.data, 'mapping', 'mapping'),
         });
         setLoading(false);
       } catch (error) {
@@ -177,12 +97,12 @@ const ReportCallType = () => {
       }
     };
     if (formRef.current) {
-      formRef.current.setFieldValue('callType', null);
+      formRef.current.setFieldValue('mapping', null);
     }
     if (selectedPartner) {
       handleCallAPI();
     } else {
-      setListCalltype({ callTypes: [] });
+      setListMapping({ mappings: [] });
     }
   }, [selectedPartner]);
 
@@ -197,30 +117,53 @@ const ReportCallType = () => {
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const { date, nickname, callType } = values;
-      const response = await ReportAPI.findReportCallType(
-        date.startDate,
-        date.endDate,
-        nickname?.value || '',
-        callType?.value || '',
+      const { selectedAccount } = convertParams(values);
+      const response = await NumberMemberAPI.findISDN(
+        selectedAccount
       );
-      const mapData1 = convertData(response?.data);
-      setData(mapData1);
-      setSearchData(mapData1);
+      searchValues.current = values;
+      setData(response?.data);
+      setSearchData(response?.data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
     }
   };
 
-  document.title = 'Report List CallType';
+  const convertParams = (values) => {
+    const selectedPartner = values.nickname?.value ?? '';
+    const selectedAccount = values.mapping?.value ?? '';
+    return {
+      selectedPartner,
+      selectedAccount
+    };
+  };
+
+  const handleDownload = async () => {
+    try {
+      setLoading(true);
+      const result = await ReportAPI.downloadISDN(
+        convertParams(searchValues.current)
+      );
+      const url = window.URL.createObjectURL(result.data);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'list_isdn';
+      link.click();
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  document.title = 'ITS ISDN';
 
   return (
     <React.Fragment>
       <LoadingComponent open={loading} />
       <div className='page-content'>
         <Container fluid>
-          <BreadCrumb title='Report theo hướng' pageTitle='Báo cáo' />
+          <BreadCrumb title='Quản lý số' pageTitle='Quản lý' />
 
           <Formik
             enableReinitialize
@@ -232,10 +175,6 @@ const ReportCallType = () => {
             <Form>
               <Row>
                 <Col lg={3}>
-                  <CalendarComponent name='date' placeholder='Chọn ngày' />
-                </Col>
-
-                <Col lg={3}>
                   <CustomSelectComponent
                     options={listData.nicknames}
                     name='nickname'
@@ -246,9 +185,9 @@ const ReportCallType = () => {
 
                 <Col lg={3}>
                   <CustomSelectComponent
-                    options={listCalltype.callTypes}
-                    name='callType'
-                    placeholder='Chọn hướng cuộc gọi'
+                    options={listMapping.mappings}
+                    name='mapping'
+                    placeholder='Chọn hướng nhà mạng'
                   />
                 </Col>
 
@@ -261,6 +200,14 @@ const ReportCallType = () => {
                     <i className='ri-search-line label-icon align-middle fs-16 me-2'></i>
                     Tìm kiếm
                   </Button>
+
+                  <Button
+                    color='success'
+                    className='download'
+                    onClick={handleDownload}
+                  >
+                    Tải về
+                  </Button>
                 </Col>
               </Row>
             </Form>
@@ -270,17 +217,22 @@ const ReportCallType = () => {
             <Col lg={12}>
               <Card>
                 <CardHeader>
-                  {/* <Col className='col-sm d-flex gap-2 justify-content-end'>
-                    <ShowHideColumn1Component
+                  <Col className='col-sm d-flex gap-2 justify-content-end'>
+                    {/* <ShowHideColumn1Component
                       columns={columnConfig}
                       setColumns={setColumnConfig}
-                    />
-                  </Col> */}
+                    /> */}
+                    <h3 className='card-title mb-0 flex-grow-1'>
+                      Danh sách Số
+                    </h3>
+                    <SearchComponent data={data} onSearch={onSearch} />
+                  </Col>
                 </CardHeader>
 
                 <CardBody>
                   <div id='table-gridjs'>
                     <DataGridComponent
+                      isBreakText
                       columns={COLUMN_CONFIG}
                       rows={searchData}
                     />
@@ -295,4 +247,4 @@ const ReportCallType = () => {
   );
 };
 
-export default ReportCallType;
+export default NumberITS;

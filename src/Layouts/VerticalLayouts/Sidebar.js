@@ -4,7 +4,7 @@ import SimpleBar from "simplebar-react";
 //import logo
 import logoSm from "../../assets/images/faviconlogo.png";
 import logoDark from "../../assets/images/logo-dark.png";
-import logoLight from "../../assets/images/leeon_logo-04.png";
+import logoLight from "../../assets/images/logo-its.png";
 
 //Import Components
 import SidebarContent from "./SidebarContent";
@@ -51,7 +51,7 @@ const Sidebar = ({ layoutType }) => {
               <img src={logoSm} alt="" height="22" />
             </span>
             <span className="logo-lg">
-              <img src={logoLight} alt="" height="80" />
+              <img src={logoLight} alt="" height="170" />
             </span>
           </Link>
           <button

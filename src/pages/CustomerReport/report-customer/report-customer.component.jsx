@@ -179,13 +179,8 @@ const ReportCustomer = () => {
       setLoading(true);
       const response = await Promise.all([
         ReportAPI.getReportList(),
-        // PartnerAPI.getListPartner(),
-        // PartnerAPI.getListAccountByPartner(),
         ReportAPI.getTotalReport(),
       ]);
-      // setPartners(getListOption(response[1].data, 'nickname', 'id'));
-      // setAccounts(getListOption(response[2].data, 'account', 'id'));
-      // listAllAccounts.current = response[2].data;
       const mapData = convertData(response[0]?.data);
       setData(mapData);
       setSearchData(mapData);
@@ -270,7 +265,7 @@ const ReportCustomer = () => {
       setLoading(false);
     }
   };
-  
+
   const convertParams = (values) => {
     const { startDate, endDate } = values.date || {};
     const selectedPartner = values.nickname?.value ?? '';
@@ -329,7 +324,7 @@ const ReportCustomer = () => {
                     options={listData.nicknames}
                     name='nickname'
                     placeholder='Chọn đối tác'
-                    // onChange={handleChangeNickname}
+                  // onChange={handleChangeNickname}
                   />
                 </Col>
 
@@ -354,11 +349,11 @@ const ReportCustomer = () => {
 
                 <Col lg={3}>
                   <Button
-                     color='success'
-                     className='add-btn'
-                     onClick={handleDownload}
-                   >
-                     Tải về
+                    color='success'
+                    className='add-btn'
+                    onClick={handleDownload}
+                  >
+                    Tải về
                   </Button>
                 </Col>
               </Row>
@@ -373,15 +368,15 @@ const ReportCustomer = () => {
                     Chi tiết Doanh thu
                   </h3> */}
                   <Col className='col-sm d-flex gap-2 justify-content-end'>
-                        {/* <SearchComponent data={data} onSearch={onSearch} /> */}
-                        <h2 className='card-title mb-0 flex-grow-1'>
-                          Chi tiết Doanh thu theo ngày
-                        </h2>
-                        <ShowHideColumnComponent
-                          columns={columnConfig}
-                          setColumns={setColumnConfig}
-                        />
-                      </Col>
+                    {/* <SearchComponent data={data} onSearch={onSearch} /> */}
+                    <h2 className='card-title mb-0 flex-grow-1'>
+                      Chi tiết Doanh thu theo ngày
+                    </h2>
+                    <ShowHideColumnComponent
+                      columns={columnConfig}
+                      setColumns={setColumnConfig}
+                    />
+                  </Col>
                 </CardHeader>
 
                 <CardBody>

@@ -29,7 +29,20 @@ export const PATH_BY_ROLE = {
     '/sms-vendor',
     '/report-customer'
   ],
-  ITS_REPORT: ['/home', '/report-detail', '/totalreport', '/change-password', '/report-customer', '/ticket-its', 'report-calltype', '/report-telco-calltype', '/user-management', '/report-detail-customer'],
+  ITS_REPORT: [
+    '/home',
+    '/report-detail',
+    '/totalreport',
+    '/change-password',
+    '/report-customer',
+    '/ticket-its',
+    '/report-calltype',
+    '/report-telco-calltype',
+    '/user-management',
+    '/report-detail-customer',
+    '/number-telco-management',
+    '/report-limit'
+  ],
   KETOAN: ['/home', '/report', '/totalreport', '/change-password', '/contract-management'],
   SALEADMIN: ['/home', '/change-password', '/contract-management', '/partner-management', '/brand-management', '/contact', 'report', '/totalreport'],
   SALE: ['/home', '/report', '/contract-management', '/change-password', '/partner-management', '/brand-management', '/contact', 'report', '/totalreport', '/ticket-its'],
@@ -39,7 +52,9 @@ export const PATH_BY_ROLE = {
     '/partner-management',
     '/change-password',
     '/service-config',
-    '/service-packet'
+    '/service-packet',
+    '/number-telco-management',
+    '/report-limit',
   ],
   ADMIN_USER: [
     '/vendor',
